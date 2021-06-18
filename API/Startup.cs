@@ -1,9 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using API.AutoMapper;
 using API.Data;
+using API.EmailAuthentication;
 using API.Entities;
+using API.Extensions;
+using API.Interfaces.IEmailAuthentication;
+using API.Interfaces.TokenServices;
+using API.Services.TokenServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -30,27 +39,21 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
-            {
-                options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            });
+            //Method Extenstion: DataBase Connection and Token 
+            services.AddApplicationServices(_config);
+
             services.AddControllers();
 
-            //Setting up the Identity API
-            services
-            .AddIdentityCore<AppUser>(options =>
-                //can be added different options towards the user, example being bellow
-                options.Password.RequireNonAlphanumeric = false
-            )
-            .AddRoles<AppRole>()
-            .AddRoleManager<RoleManager<AppRole>>()
-            .AddSignInManager<SignInManager<AppUser>>()
-            .AddRoleValidator<RoleValidator<AppRole>>()
-            .AddEntityFrameworkStores<DataContext>();
-
-            services.AddAuthentication();  
+            //Method Extention: Identity
+            services.AddIdentityServices(_config);  
 
             services.AddCors();
+
+            //Email Connection
+            services.AddTransient<IEmailSender,EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(_config.GetSection("SendGridEmail"));
+
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 
             // services.AddSwaggerGen(c =>
@@ -76,6 +79,8 @@ namespace API
             app.UseCors(policy => policy.AllowAnyHeader()
             .AllowAnyMethod()
             .WithOrigins("https://localhost:4200"));
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

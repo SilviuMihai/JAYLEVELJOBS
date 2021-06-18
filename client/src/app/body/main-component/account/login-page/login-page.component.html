@@ -1,0 +1,19 @@
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col align-self-center">
+            <h1 class="text-center p-100">Login</h1>
+            <form [formGroup] = "loginForm" (ngSubmit)=" loginForm.valid && login()">
+                <label >Email address</label>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  <app-text-input [formControl]='loginForm.controls["email"]' [label]='"Email"' aria-describedby="emailHelp">
+                  </app-text-input>
+                
+                <label class="mt-3">Password</label>
+                <app-text-input type="password" [formControl]='loginForm.controls["password"]' [label]='"Password"'>
+                </app-text-input>
+
+                <div class="form-group"><button [disabled]="!loginForm.valid" type="submit" class="btn btn-primary">Submit</button></div>
+            </form>
+        </div>
+    </div>
+</div>

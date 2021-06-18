@@ -7,7 +7,6 @@ namespace API.Entities
     //Principal Entity
     public class AppUser:IdentityUser<int>
     {
-        [Required]
         public bool HrUserCheck { get; set; }
         public string Company { get; set; }
 

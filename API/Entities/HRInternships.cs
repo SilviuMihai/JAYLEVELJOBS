@@ -15,10 +15,10 @@ namespace API.Entities
         public string Required { get; set; }
         public string Company { get; set; }
 
-        [Required]
+        
         public string City { get; set; }
 
-        [Required]
+        
         public string Country { get; set; }
         public DateTime EndDateEnrollment { get; set; }
 

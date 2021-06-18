@@ -1,0 +1,37 @@
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col align-self-center">
+            <h1 class="text-center p-100">Register</h1>
+            <form [formGroup] = "registerForm" (ngSubmit)="registerForm.valid && register()" autocomplete="off">
+              
+              <label >Username</label>
+                  <app-text-input [formControl]='registerForm.controls["username"]' [label]='"Username"'>
+                  </app-text-input>
+
+              <label >Email address</label>
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <app-text-input [formControl]='registerForm.controls["email"]' [label]='"Email"' aria-describedby="emailHelp">
+                </app-text-input>
+
+                <label >Password</label>
+                  <app-text-input type='password' [formControl]='registerForm.controls["password"]' [label]='"Password"'>
+                  </app-text-input>
+
+                  <label >Confirm Password</label>
+                  <app-text-input type='password' [formControl]='registerForm.controls["confirmpassword"]' [label]='"Confirm Password"'>
+                  </app-text-input>
+
+                  <label >Company Name</label>
+                  <app-text-input [formControl]='registerForm.controls["company"]' [label]='"Company Name"'>
+                  </app-text-input>
+
+                  <div class="form-check">
+                    <input formControlName = "hrusercheck" type="checkbox" class="form-check-input">
+                    <label class="form-check-label">Company Recruiter Check</label>
+                        <small class="form-text text-muted">Check if you are a recruiter, if not, don't check the box !</small>
+                  </div>
+                <button [disabled]="!registerForm.valid" type="submit" class="btn btn-primary mt-4">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

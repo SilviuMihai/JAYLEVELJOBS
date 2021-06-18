@@ -8,7 +8,7 @@ namespace API.Entities
         [Key]
         public int IdWorkShops { get; set; }
         
-        [Required]
+        
         public string URL { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

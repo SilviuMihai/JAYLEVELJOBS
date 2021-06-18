@@ -1,0 +1,37 @@
+ <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <div class="container-fluid">
+        
+        <div class="row">
+          <a class="ml-1 navbar-brand" routerLink='/'>Junior/Entry Level Jobs</a>
+          <a class="ml-3 justify-content-start nav-link text-white" routerLink='/'>Home</a>
+        </div>
+        
+        
+            <ul class="navbar-nav justify-content-end" *ngIf="!loggedIn">
+              <li class="nav-item">
+                <a class="nav-link" routerLink='/login-page' routerLinkActive='active'>Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink='/register-page' routerLinkActive='active'>Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink='/forgot-password' routerLinkActive='active'>Forgot Password</a>
+              </li>
+            </ul>
+
+                    <div *ngIf="loggedIn">
+                      <div class="row">
+                        <div class="dropdown justify-content-end mr-4"  dropdown>
+                          <a class="dropdown-toggle text-light" dropdownToggle>{{userEmail}}</a>
+                          <div class="dropdown-menu" *dropdownMenu>
+                            <a class="dropdown-item" href="#">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" routerLink='/change-password'>Change Password</a>
+                          </div>
+                        </div>
+                        <a class="text-white mr-3 set-cursor" (click)="logout()">LogOut</a>
+                      </div>
+                    </div>
+                  
+      </div>
+</nav>

@@ -8,7 +8,7 @@ namespace API.Entities
     {
         [Key]
         public int IdCVUser { get; set; }
-        [Required]
+        
         public string URL { get; set; }
         public DateTime DateCVAdded { get; set; }
 

@@ -7,7 +7,7 @@ namespace API.Entities
         [Key]
         public int IdGroups { get; set; }
         
-        [Required]
+       
         public string URL { get; set; }
 
         //Foreign Key
