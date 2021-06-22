@@ -116,9 +116,11 @@ namespace API.Controllers
         if (user.EmailConfirmed == false) return Unauthorized();
 
         //login the user and verifies the password in the database
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, true);
         
-        if (!result.Succeeded) return Ok();
+        if(result.IsLockedOut) return Unauthorized("The Account is locked, please try again after some time or reset password!");
+
+        if (!result.Succeeded) return BadRequest();
 
         return new UserDto(){
             Username = user.UserName,

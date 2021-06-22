@@ -14,6 +14,7 @@ namespace API.DTOs.AccountDTOs
 
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(32, MinimumLength = 8, ErrorMessage = "Maximum of 32 characters")]
         public string NewPassword { get; set; }
 
         [Required]

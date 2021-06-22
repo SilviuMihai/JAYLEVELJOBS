@@ -6,6 +6,7 @@ namespace API.DTOs.AccountDTOs
     {
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(32, MinimumLength = 8, ErrorMessage = "Maximum of 32 characters")]
         public string Password { get; set; }
 
         [Required]
@@ -21,6 +22,7 @@ namespace API.DTOs.AccountDTOs
 
         [EmailAddress]
         [Required]
+        [RegularExpression(@"^[a-zA-Z\-]+$")]
         public string Email { get; set; }
 
 

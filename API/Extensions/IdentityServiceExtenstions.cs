@@ -1,6 +1,8 @@
+using System;
 using System.Text;
 using API.Data;
 using API.Entities;
+using API.Extensions.PasswordValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -18,9 +20,22 @@ namespace API.Extensions
             .AddIdentityCore<AppUser>(options =>
                 //can be added different options towards the user, example being bellow
                 {
-                options.Password.RequireNonAlphanumeric = false;
-                options.SignIn.RequireConfirmedEmail = true;
-                options.User.RequireUniqueEmail = true;
+                    // Password settings.
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequiredUniqueChars = 1;
+
+                    // Email settings
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.User.RequireUniqueEmail = true;
+
+                    // Lockout settings
+                    // Failed attempts is 5 times
+                    options.Lockout.AllowedForNewUsers = true;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
                 }   
             )
             .AddRoles<AppRole>()
@@ -28,7 +43,17 @@ namespace API.Extensions
             .AddSignInManager<SignInManager<AppUser>>()
             .AddRoleValidator<RoleValidator<AppRole>>()
             .AddEntityFrameworkStores<DataContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddPasswordValidator<MaximumLengthPasswordValidation<AppUser>>();
+            //Default token life span is 1 day
+
+
+            // To overwrite the token life span
+            /* services.Configure<DataProtectionTokenProviderOptions>(options =>{
+                options.TokenLifespan = TimeSpan.FromHours(5);
+            }); */
+            //Note: email token confirmation life span can be changed
+
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
