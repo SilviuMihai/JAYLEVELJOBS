@@ -9,18 +9,26 @@ import { RegisterPageComponent } from './body/main-component/account/register-pa
 import { ResetPasswordComponent } from './body/main-component/account/reset-password/reset-password.component';
 import { LearningsDocumentationComponent } from './body/main-component/user-first-page/home-page/learnings-documentation/learnings-documentation.component';
 import { UserFirstPageComponent } from './body/main-component/user-first-page/user-first-page.component'
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
+import { ApproveEmailGuard } from './_guards/approve-email.guard';
 import { AuthGuard } from './_guards/auth.guard';
+import { ResetPasswordGuardGuard } from './_guards/reset-password-guard.guard';
 
 //ORDER OF THE PATH'S MATTER
 const routes: Routes = [
   { path:'', component: UserFirstPageComponent },
   { path:'login-page', component: LoginPageComponent },
-  { path:'register-page', component: RegisterPageComponent },
+  { path:'register-page', component: RegisterPageComponent, },
   { path:'forgot-password', component: ForgotPasswordPageComponent },
   { path:'learnings-documentation', component: LearningsDocumentationComponent },
-  { path:'email-alert', component: EmailConfirmationComponent },
-  { path:'approve-email', component: ApprovingAccountByemailComponent },
-  { path:'reset-password', component: ResetPasswordComponent},
+  { path:'email-alert', component: EmailConfirmationComponent,  }, //guard maybe ?
+  { path:'approve-email', component: ApprovingAccountByemailComponent, canActivate: [ApproveEmailGuard] },
+  { path:'reset-password', component: ResetPasswordComponent, canActivate: [ResetPasswordGuardGuard] },
+  { path:'errors', component: TestErrorsComponent },
+  { path:'not-found', component: NotFoundComponent },
+  { path:'server-error', component: ServerErrorComponent },
   //CAN ACTIVATE GUARD FOR A SINGLE LINK
   //{ path:'forgot-password', component: ForgotPasswordPageComponent, canActivate: [AuthGuard] },
 
@@ -35,7 +43,7 @@ const routes: Routes = [
       { path:'change-password', component: ChangePasswordComponent }
     ]
   },
-  { path:'**', component: UserFirstPageComponent, pathMatch: 'full' } //in case no other page works, will redirect the user towards the UserFirstPage
+  { path:'**', component: NotFoundComponent, pathMatch: 'full' } //in case no other page works, will redirect the user towards the UserFirstPage
 
   //CAN ACTIVATE GUARD FOR A SINGLE LINK
   //{ path:'forgot-password', component: ForgotPasswordPageComponent, canActivate: [AuthGuard] }, 

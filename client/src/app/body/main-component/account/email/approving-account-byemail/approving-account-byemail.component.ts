@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/_services/account_services/account.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class ApprovingAccountByemailComponent implements OnInit {
   userId:string;
   token:string;
 
-  constructor(private accountService: AccountService, private route: ActivatedRoute) { }
+  constructor(private accountService: AccountService, private route: ActivatedRoute,
+    private router: Router, private toastr: ToastrService) { }
   
   ngOnInit(): void {
     this.emailconfirmation();
@@ -27,7 +29,7 @@ export class ApprovingAccountByemailComponent implements OnInit {
       this.userId = params.userId;
       this.token = params.token;
     });
-    //passing the values
-    this.accountService.emailconfirmation(this.userId,this.token).subscribe();
+      //passing the values
+      this.accountService.emailconfirmation(this.userId,this.token).subscribe();
   }
 }

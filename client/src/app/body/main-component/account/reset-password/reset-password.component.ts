@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { matchValues } from 'src/app/_forms/match-value';
 import { ResetPassword } from 'src/app/_models/account/resetpassword';
 import { AccountService } from 'src/app/_services/account_services/account.service';
@@ -13,7 +14,8 @@ import { AccountService } from 'src/app/_services/account_services/account.servi
 export class ResetPasswordComponent implements OnInit {
 
   forgotpasswordForm: FormGroup;
-  constructor(private accountService: AccountService ,private route: ActivatedRoute ,private router: Router) { }
+  constructor(private accountService: AccountService ,private route: ActivatedRoute 
+    ,private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getQueryValues();
@@ -47,17 +49,18 @@ export class ResetPasswordComponent implements OnInit {
 
   resetpassword()
   {
-    //was created a model, to be sent towards API
-    let model = new ResetPassword();
-    model.email = this.email;
-    model.token = this.token;
+      //was created a model, to be sent towards API
+      let model = new ResetPassword();
+      model.email = this.email;
+      model.token = this.token;
 
-    //to extract the values from the formgroup
-    model.password = this.forgotpasswordForm.get('password').value;
-    model.confirmpassword = this.forgotpasswordForm.get('confirmpassword').value;
+      //to extract the values from the formgroup
+      model.password = this.forgotpasswordForm.get('password').value;
+      model.confirmpassword = this.forgotpasswordForm.get('confirmpassword').value;
 
-    this.accountService.resetpassword(model).subscribe();
-    this.router.navigateByUrl('login-page');
+      this.accountService.resetpassword(model).subscribe();
+      this.router.navigateByUrl('login-page');
+      this.toastr.success("Password was changed. Please Login !");
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ForgotPassword } from 'src/app/_models/account/forgotpassword';
 import { AccountService } from 'src/app/_services/account_services/account.service';
 
@@ -10,7 +11,7 @@ import { AccountService } from 'src/app/_services/account_services/account.servi
 })
 export class ForgotPasswordPageComponent implements OnInit {
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -21,5 +22,6 @@ export class ForgotPasswordPageComponent implements OnInit {
       let model = new ForgotPassword();
       model.email = this.email.value;
         this.accountService.forgotpassword(model).subscribe();
+        this.router.navigateByUrl('email-alert');
     }
 }

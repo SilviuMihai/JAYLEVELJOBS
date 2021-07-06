@@ -22,7 +22,7 @@ namespace API.DTOs.AccountDTOs
 
         [EmailAddress]
         [Required]
-        [RegularExpression(@"^[a-zA-Z\-]+$")]
+        //[RegularExpression(@"^[a-zA-Z\-]+$")]
         public string Email { get; set; }
 
 
