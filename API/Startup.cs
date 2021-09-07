@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using API.AutoMapper;
 using API.Data;
+using API.Data.Repositories;
 using API.EmailAuthentication;
 using API.Entities;
 using API.Extensions;
+using API.Interfaces;
 using API.Interfaces.IEmailAuthentication;
 using API.Interfaces.TokenServices;
 using API.Middleware;
@@ -43,8 +45,9 @@ namespace API
             //Method Extenstion: DataBase Connection and Token 
             services.AddApplicationServices(_config);
 
-            services.AddControllers();
-
+            //Added NewtonsoftJson for a better conversion of Json to NET and NET to JSON
+            services.AddControllers().AddNewtonsoftJson();
+            
             //Method Extention: Identity
             services.AddIdentityServices(_config);  
 
@@ -54,7 +57,12 @@ namespace API
             services.AddTransient<IEmailSender,EmailSender>();
             services.Configure<AuthMessageSenderOptions>(_config.GetSection("SendGridEmail"));
 
+            //AutoMaooer
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+            services.AddScoped<IInformationRepository,InformationRepository>();
+
+            services.AddAuthorization();
 
 
             // services.AddSwaggerGen(c =>
@@ -84,6 +92,7 @@ namespace API
             
             app.UseCors(policy => policy.AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowCredentials()
             .WithOrigins("https://localhost:4200"));
 
             app.UseAuthentication();

@@ -27,7 +27,10 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { ToastrModule } from 'ngx-toastr';
-import { RouterModule } from '@angular/router';
+import { CompanyJobsLinksComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/company-jobs-links.component';
+import { PostCompanyJobsComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/post-company-jobs/post-company-jobs.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,8 @@ import { RouterModule } from '@angular/router';
     TestErrorsComponent,
     NotFoundComponent,
     ServerErrorComponent,
+    CompanyJobsLinksComponent,
+    PostCompanyJobsComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,9 +64,11 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     SharedModule,
     ToastrModule.forRoot({positionClass: 'toast-bottom-right'}), // ToastrModule added
+    BsDatepickerModule.forRoot(),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

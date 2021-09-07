@@ -162,9 +162,14 @@ namespace API.Data.Migrations
                 {
                     IdCompanyJobsLinks = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    URL = table.Column<string>(type: "TEXT", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    URL = table.Column<string>(type: "TEXT", nullable: true),
+                    NameURL = table.Column<string>(type: "TEXT", nullable: true),
+                    ShortDescription = table.Column<string>(type: "TEXT", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CheckDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ReportedLink = table.Column<int>(type: "INTEGER", nullable: true),
+                    LinkNotAvailable = table.Column<int>(type: "INTEGER", nullable: true),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -184,7 +189,7 @@ namespace API.Data.Migrations
                 {
                     IdGroups = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    URL = table.Column<string>(type: "TEXT", nullable: false),
+                    URL = table.Column<string>(type: "TEXT", nullable: true),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -211,8 +216,8 @@ namespace API.Data.Migrations
                     Company = table.Column<string>(type: "TEXT", nullable: true),
                     EmploymentType = table.Column<string>(type: "TEXT", nullable: true),
                     Duration = table.Column<string>(type: "TEXT", nullable: true),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    Country = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: true),
+                    Country = table.Column<string>(type: "TEXT", nullable: true),
                     EndDateEnrollment = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -240,8 +245,8 @@ namespace API.Data.Migrations
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Required = table.Column<string>(type: "TEXT", nullable: true),
                     Company = table.Column<string>(type: "TEXT", nullable: true),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    Country = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: true),
+                    Country = table.Column<string>(type: "TEXT", nullable: true),
                     EndDateEnrollment = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -269,8 +274,8 @@ namespace API.Data.Migrations
                     Company = table.Column<string>(type: "TEXT", nullable: true),
                     EmploymentType = table.Column<string>(type: "TEXT", nullable: true),
                     Duration = table.Column<string>(type: "TEXT", nullable: true),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    Country = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: true),
+                    Country = table.Column<string>(type: "TEXT", nullable: true),
                     EndDateEnrollment = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -298,8 +303,8 @@ namespace API.Data.Migrations
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Required = table.Column<string>(type: "TEXT", nullable: true),
                     Company = table.Column<string>(type: "TEXT", nullable: true),
-                    City = table.Column<string>(type: "TEXT", nullable: false),
-                    Country = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: true),
+                    Country = table.Column<string>(type: "TEXT", nullable: true),
                     EndDateEnrollment = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -320,7 +325,7 @@ namespace API.Data.Migrations
                 {
                     IdInternShipsLinks = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    URL = table.Column<string>(type: "TEXT", nullable: false),
+                    URL = table.Column<string>(type: "TEXT", nullable: true),
                     StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -364,7 +369,7 @@ namespace API.Data.Migrations
                 {
                     IdCVUser = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    URL = table.Column<string>(type: "TEXT", nullable: false),
+                    URL = table.Column<string>(type: "TEXT", nullable: true),
                     DateCVAdded = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -385,7 +390,7 @@ namespace API.Data.Migrations
                 {
                     IdWorkShops = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    URL = table.Column<string>(type: "TEXT", nullable: false),
+                    URL = table.Column<string>(type: "TEXT", nullable: true),
                     StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppUserId = table.Column<int>(type: "INTEGER", nullable: false)

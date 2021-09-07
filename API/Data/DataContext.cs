@@ -11,16 +11,16 @@ namespace API.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options){}
 
-        DbSet<CompanyJobsLinks> CompanyJobsLinksDB { get; set; }
-        DbSet<CVUser> UserWithCVDB { get; set; }
-        DbSet<Groups> GroupsDB { get; set; }
-        DbSet<HREntryLevelJobs> HREntryLevelJobsDB { get; set; }
-        DbSet<HRInternships> HRInternshipsDB { get; set; }
-        DbSet<HRJuniorLevelJobs> HRJuniorLevelJobsDB { get; set; }
-        DbSet<HRWorkShops> HRWorkShopsDB { get; set; }
-        DbSet<InternShipsLinks> InternShipsLinksDB { get; set; }
-        DbSet<Learnings> LearningsDB { get; set; }
-        DbSet<WorkShops> WorkShopsDB { get; set; }
+        public DbSet<CompanyJobsLinks> CompanyJobsLinksDB { get; set; }
+        public DbSet<CVUser> UserWithCVDB { get; set; }
+        public DbSet<Groups> GroupsDB { get; set; }
+        public DbSet<HREntryLevelJobs> HREntryLevelJobsDB { get; set; }
+        public DbSet<HRInternships> HRInternshipsDB { get; set; }
+        public DbSet<HRJuniorLevelJobs> HRJuniorLevelJobsDB { get; set; }
+        public DbSet<HRWorkShops> HRWorkShopsDB { get; set; }
+        public DbSet<InternShipsLinks> InternShipsLinksDB { get; set; }
+        public DbSet<Learnings> LearningsDB { get; set; }
+        public DbSet<WorkShops> WorkShopsDB { get; set; }
 
 
         //Fluent API - used to overwrite the EF Core conventions
@@ -39,8 +39,7 @@ namespace API.Data
             .HasMany(ur => ur.UserRoles)
             .WithOne(u => u.Role)
             .HasForeignKey(ur =>ur.RoleId)
-            .IsRequired();
-            
+            .IsRequired();            
         }
     }
 }

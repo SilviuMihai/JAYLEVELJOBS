@@ -7,6 +7,7 @@ import { ForgotPasswordPageComponent } from './body/main-component/account/forgo
 import { LoginPageComponent } from './body/main-component/account/login-page/login-page.component';
 import { RegisterPageComponent } from './body/main-component/account/register-page/register-page.component';
 import { ResetPasswordComponent } from './body/main-component/account/reset-password/reset-password.component';
+import { CompanyJobsLinksComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/company-jobs-links.component';
 import { LearningsDocumentationComponent } from './body/main-component/user-first-page/home-page/learnings-documentation/learnings-documentation.component';
 import { UserFirstPageComponent } from './body/main-component/user-first-page/user-first-page.component'
 import { NotFoundComponent } from './errors/not-found/not-found.component';
@@ -19,6 +20,7 @@ import { ResetPasswordGuardGuard } from './_guards/reset-password-guard.guard';
 //ORDER OF THE PATH'S MATTER
 const routes: Routes = [
   { path:'', component: UserFirstPageComponent },
+  { path:'companies-jobs-shared', component: CompanyJobsLinksComponent },
   { path:'login-page', component: LoginPageComponent },
   { path:'register-page', component: RegisterPageComponent, },
   { path:'forgot-password', component: ForgotPasswordPageComponent },

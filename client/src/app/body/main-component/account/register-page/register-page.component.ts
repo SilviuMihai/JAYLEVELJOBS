@@ -21,8 +21,7 @@ export class RegisterPageComponent implements OnInit {
 
   initializeForm(){
   this.registerForm = this.fb.group({
-    username: new FormControl('',[Validators.required,Validators.minLength(4),
-      Validators.maxLength(32),Validators.pattern('^[a-zA-Z\-]+$')]),
+    username: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(32)]),//,Validators.pattern('^[a-zA-Z\-]+$')]),
     email: new FormControl('',[Validators.required,Validators.email]),
     password: new FormControl('',[Validators.required,Validators.minLength(8),
       Validators.maxLength(32),
@@ -30,7 +29,7 @@ export class RegisterPageComponent implements OnInit {
     confirmpassword: new FormControl('',[Validators.required, matchValues('password')]),
     //Pre-defined the value to false, will change to true, when the user sets it
     hrusercheck: new FormControl(false,Validators.required),
-    company: new FormControl('',Validators.pattern('^[a-zA-Z\-]+$'))
+    company: new FormControl('')//Validators.pattern('^[a-zA-Z\-]+$'))
   });
 
   this.registerForm.controls.password.valueChanges.subscribe(() => {

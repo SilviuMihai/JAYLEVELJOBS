@@ -142,7 +142,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("URL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("IdCVUser");
@@ -162,14 +161,28 @@ namespace API.Data.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime>("CheckDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("LinkNotAvailable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NameURL")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ReportedLink")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("URL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("IdCompanyJobsLinks");
@@ -189,7 +202,6 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("URL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("IdGroups");
@@ -209,14 +221,12 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Company")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Duration")
@@ -257,14 +267,12 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Company")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
@@ -305,14 +313,12 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Company")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Duration")
@@ -353,14 +359,12 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Company")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
@@ -407,7 +411,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("URL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("IdInternShipsLinks");
@@ -458,7 +461,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("URL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("IdWorkShops");
