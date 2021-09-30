@@ -10,6 +10,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -25,7 +27,6 @@ namespace API.Controllers
             _informationRepository = informationRepository;
             _userManager = userManager;
             _mapper = mapper;
-
         }
         [Authorize]
         [HttpPost("post-companies-jobs-links")]
@@ -82,15 +83,14 @@ namespace API.Controllers
         [HttpGet("get-companies-jobs-links")]
         public async Task<ActionResult<IEnumerable<GetCompaniesJobsLinksDto>>> GetCompaniesJobsLinks()
         {     
-
+            
             IEnumerable<GetCompaniesJobsLinksDto> jobs = null;
 
-            //Claims only works if the client sends the token, so from there it gets the user //checked with postman
+            //Claims only works if the client sends the token, so from there it gets the user
             //Get the current User logged in
             //Returns a null, if the user is not logged in
             var name =  User.FindFirstValue(ClaimTypes.NameIdentifier);
     
-
             if(name == null)
             {
                 jobs = await _informationRepository.GetCompaniesJobsLinksAllUsers();

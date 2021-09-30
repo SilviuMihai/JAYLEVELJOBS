@@ -17,6 +17,7 @@ using API.Services.TokenServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,14 +43,14 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Method Extenstion: DataBase Connection and Token 
+            //Method Extention: DataBase Connection and Token 
             services.AddApplicationServices(_config);
 
             //Added NewtonsoftJson for a better conversion of Json to NET and NET to JSON
-            services.AddControllers().AddNewtonsoftJson();
-            
+            services.AddControllers().AddNewtonsoftJson();  
+
             //Method Extention: Identity
-            services.AddIdentityServices(_config);  
+            services.AddIdentityServices(_config);
 
             services.AddCors();
 
@@ -88,6 +89,11 @@ namespace API
 
             app.UseHttpsRedirection();
 
+            /* app.UseCors(policy => policy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins("https://localhost:4200"));
+            */
             app.UseRouting();
             
             app.UseCors(policy => policy.AllowAnyHeader()

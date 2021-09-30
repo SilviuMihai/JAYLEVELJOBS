@@ -43,9 +43,8 @@ namespace API.Extensions
             .AddSignInManager<SignInManager<AppUser>>()
             .AddRoleValidator<RoleValidator<AppRole>>()
             .AddEntityFrameworkStores<DataContext>()
-            .AddDefaultTokenProviders()
+            //.AddDefaultTokenProviders()
             .AddPasswordValidator<MaximumLengthPasswordValidation<AppUser>>();
-            //Default token life span is 1 day
 
 
             // To overwrite the token life span

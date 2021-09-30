@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyLinks } from 'src/app/_models/informations/CompanyLinks';
@@ -23,11 +23,12 @@ export class CompanyJobsLinksComponent implements OnInit {
 
   constructor(public accountService: AccountService,private informationService: InformationsService, 
     private toastr: ToastrService) 
-  {}
+  {
+  }
 
   ngOnInit(): void {
-    this.getCurrentUser();
-    this.getCompaniesLinks();
+      //this.getCurrentUser();
+      this.getCompaniesLinks();
   }
 
   getCompaniesLinks()
@@ -81,7 +82,7 @@ export class CompanyJobsLinksComponent implements OnInit {
     this.setPage = $event;
   }
 
-  getCurrentUser()
+  /* getCurrentUser()
   {
     this.accountService.currentUser$.subscribe(user =>{
     if(user)
@@ -93,6 +94,6 @@ export class CompanyJobsLinksComponent implements OnInit {
       this.loggedIn = false;
     }
     });
-  }
+  } */
 
 }
