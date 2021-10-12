@@ -72,7 +72,7 @@
                                     <div *ngIf="accountService.currentUser$ | async; else elseBlock">
                                         <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)'>Report</button>
                                     </div>
-                                    <ng-template #elseBlock>--</ng-template>
+                                        <ng-template #elseBlock>--</ng-template>
                             </div>
                             <p class="text-muted">{{item.shortDescription}}</p>
                         </li>

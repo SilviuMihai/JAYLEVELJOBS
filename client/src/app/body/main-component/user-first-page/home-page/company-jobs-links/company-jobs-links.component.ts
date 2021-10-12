@@ -1,5 +1,5 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component,  OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyLinks } from 'src/app/_models/informations/CompanyLinks';
 import { SearchJobs } from 'src/app/_models/informations/SearchJobs';
@@ -13,9 +13,9 @@ import { InformationsService } from 'src/app/_services/informations_services/inf
 })
 export class CompanyJobsLinksComponent implements OnInit {
 
-  
-    searchBar = new FormControl('',[Validators.minLength(3),Validators.maxLength(50),Validators.required])
-  
+    
+  searchBar = new FormControl('',[Validators.minLength(3),Validators.maxLength(50),Validators.required])
+
 
   setPage = true;
   loggedIn = false;
@@ -25,16 +25,21 @@ export class CompanyJobsLinksComponent implements OnInit {
     private toastr: ToastrService) 
   {
   }
+ 
 
+  
   ngOnInit(): void {
       //this.getCurrentUser();
-      this.getCompaniesLinks();
+        this.getCompaniesLinks();   
   }
+
+
 
   getCompaniesLinks()
   {
     this.informationService.getCompaniesLink().subscribe(response =>{ 
       this.getJobs = response;
+
     });
     this.getJobsPage();
   }
@@ -70,7 +75,7 @@ export class CompanyJobsLinksComponent implements OnInit {
   }
 
   getJobsPage(){
-    this.setPage=true;
+    this.setPage = true;
   }
   postJobsPage(){
     this.setPage = false;

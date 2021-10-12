@@ -1,5 +1,6 @@
 import { HttpClient , HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CustomEncoder } from 'src/app/shared/Account/custom-encoder';
@@ -13,7 +14,7 @@ import { User } from 'src/app/_models/account/user';
 })
 export class AccountService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   baseUrl = 'https://localhost:5001/api/';
 
@@ -55,6 +56,13 @@ export class AccountService {
   {
     localStorage.removeItem('userjayleveljobs');
     this.currentUserSource.next(null);
+
+    //This was created because, the component must re-trigger so it can show the elements when the user it's logout.
+    //Example being the component CompanyJobsLinks which shows different elements when the user is logged in or logged out.
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+    });
   }
 
   //Register POST
