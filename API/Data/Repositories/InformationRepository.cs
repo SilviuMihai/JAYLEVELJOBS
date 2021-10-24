@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs.InformationDTOs;
 using API.Entities;
+using API.Helpers;
+using API.Helpers.Pagination;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -29,7 +31,7 @@ namespace API.Data.Repositories
 
         //Get All the companies jobs with links that are valid from the database
         //Return all the objects of the CompanyJobsLinksDB and projects them to the GetCompaniesJobsLinksDto by using AutoMapper
-         public async Task<IEnumerable<GetCompaniesJobsLinksDto>> GetCompaniesJobsLinksAllUsers()
+         public async Task<PagedList<GetCompaniesJobsLinksDto>> GetCompaniesJobsLinksAllUsers(UserParams userParams)
         {
             var jobs = from s in _context.CompanyJobsLinksDB select s;
 
@@ -38,13 +40,15 @@ namespace API.Data.Repositories
                     && 
                         (x.LinkNotAvailable < 3 || x.LinkNotAvailable == null)));
             
-            return await jobs.ProjectTo<GetCompaniesJobsLinksDto>(_mapper.ConfigurationProvider).ToListAsync();
+            var companiesJobsLinksAllUsers = jobs.ProjectTo<GetCompaniesJobsLinksDto>(_mapper.ConfigurationProvider);
+
+            return await PagedList<GetCompaniesJobsLinksDto>.CreateAsync(companiesJobsLinksAllUsers, userParams.PageNumber, userParams.PageSize);
         }
 
 
         //Get All the companies jobs with links that are valid from the database
         //Return all the objects of the CompanyJobsLinksDB and projects them to the GetCompaniesJobsLinksDto by using AutoMapper
-        public async Task<IEnumerable<GetCompaniesJobsLinksDto>> GetCompaniesJobsLinksLoggedInUser(int userId)
+        public async Task<PagedList<GetCompaniesJobsLinksDto>> GetCompaniesJobsLinksLoggedInUser(UserParams userParams, int userId)
         {
             var jobs = from s in _context.CompanyJobsLinksDB select s;
             var jobsListLoggedInUser = jobs;
@@ -56,7 +60,9 @@ namespace API.Data.Repositories
                 (x.ReportedLink < 3 || x.LinkNotAvailable <3 || x.ReportedLink == null || x.LinkNotAvailable == null));
                 jobs = jobsListLoggedInUser.Concat(jobsListOtherUsers);
 
-           return  await jobs.ProjectTo<GetCompaniesJobsLinksDto>(_mapper.ConfigurationProvider).ToListAsync();
+            var companiesJobsLinksLoggedInUsers =  jobs.ProjectTo<GetCompaniesJobsLinksDto>(_mapper.ConfigurationProvider);
+
+            return await PagedList<GetCompaniesJobsLinksDto>.CreateAsync(companiesJobsLinksLoggedInUsers, userParams.PageNumber, userParams.PageSize);
         }
 
         //Get the number of posts that the user has posted in that respective day

@@ -1,7 +1,7 @@
 import { HttpClient , HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
+import { from, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CustomEncoder } from 'src/app/shared/Account/custom-encoder';
 import { ForgotPassword } from 'src/app/_models/account/forgotpassword';
@@ -23,7 +23,6 @@ export class AccountService {
   //and than will emit the last value inside it or how many we want
   //To emit the values, a subscriber needs to subscribe something in the buffer
   private currentUserSource = new ReplaySubject<User>(1);
-
   currentUser$ = this.currentUserSource.asObservable();
 
   setCurrentUser(user:User)
@@ -57,7 +56,7 @@ export class AccountService {
     localStorage.removeItem('userjayleveljobs');
     this.currentUserSource.next(null);
 
-    //This was created because, the component must re-trigger so it can show the elements when the user it's logout.
+    //This was created because, the component must re-trigger so it can show the new elements when the user logs out.
     //Example being the component CompanyJobsLinks which shows different elements when the user is logged in or logged out.
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {

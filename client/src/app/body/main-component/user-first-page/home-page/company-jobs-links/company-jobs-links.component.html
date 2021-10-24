@@ -85,6 +85,24 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col">
+                <div class="d-flex justify-content-center" *ngIf="pagination">
+                        <pagination 
+                        [boundaryLinks]="showBoundaryLinks" 
+                        [totalItems]="pagination.totalItems"
+                        [itemsPerPage]="pagination.itemsPerPage"
+                        [(ngModel)]="pagination.currentPage"
+                        (pageChanged)="pageChanged($event)" 
+                        ></pagination>
+                        <!-- [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  -->
+                        <!-- (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method -->
+                        <div class="ml-4"><button type="button" class="btn btn-info" 
+                            (click)="showBoundaryLinks = !showBoundaryLinks">Hide/show boundary links</button></div>
+                </div>
+            </div>
+        </div>
+
 </div>
 
 

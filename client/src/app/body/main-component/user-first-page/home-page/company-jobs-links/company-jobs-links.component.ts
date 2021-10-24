@@ -3,6 +3,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyLinks } from 'src/app/_models/informations/CompanyLinks';
 import { SearchJobs } from 'src/app/_models/informations/SearchJobs';
+import { PageParameters } from 'src/app/_models/pagination/PageParameters';
+import { Pagination } from 'src/app/_models/pagination/pagination';
 import { AccountService } from 'src/app/_services/account_services/account.service';
 import { InformationsService } from 'src/app/_services/informations_services/informations.service';
 
@@ -21,6 +23,11 @@ export class CompanyJobsLinksComponent implements OnInit {
   loggedIn = false;
   getJobs: CompanyLinks[];
 
+  //Pagination
+  pagination: Pagination;
+  pageParameters = new PageParameters();
+
+
   constructor(public accountService: AccountService,private informationService: InformationsService, 
     private toastr: ToastrService) 
   {
@@ -37,9 +44,9 @@ export class CompanyJobsLinksComponent implements OnInit {
 
   getCompaniesLinks()
   {
-    this.informationService.getCompaniesLink().subscribe(response =>{ 
-      this.getJobs = response;
-
+    this.informationService.getCompaniesLink(this.pageParameters).subscribe(response =>{ 
+      this.getJobs = response.result;
+      this.pagination = response.pagination;
     });
     this.getJobsPage();
   }
@@ -87,6 +94,13 @@ export class CompanyJobsLinksComponent implements OnInit {
     this.setPage = $event;
   }
 
+  pageChanged(event: any) {
+    //here we are taking the page number that is currently pressed
+    this.pageParameters.pageNumber = event.page;
+    //and give it to the request that is inside of getCompaniesLinks()
+    this.getCompaniesLinks();
+  }
+
   /* getCurrentUser()
   {
     this.accountService.currentUser$.subscribe(user =>{
@@ -100,5 +114,4 @@ export class CompanyJobsLinksComponent implements OnInit {
     }
     });
   } */
-
 }

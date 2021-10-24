@@ -31,6 +31,7 @@ import { CompanyJobsLinksComponent } from './body/main-component/user-first-page
 import { PostCompanyJobsComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/post-company-jobs/post-company-jobs.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     SharedModule,
     ToastrModule.forRoot({positionClass: 'toast-bottom-right'}), // ToastrModule added
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

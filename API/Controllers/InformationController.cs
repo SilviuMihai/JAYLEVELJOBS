@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Http;
+using API.Helpers.Pagination;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -81,10 +83,10 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet("get-companies-jobs-links")]
-        public async Task<ActionResult<IEnumerable<GetCompaniesJobsLinksDto>>> GetCompaniesJobsLinks()
+        public async Task<ActionResult<IEnumerable<GetCompaniesJobsLinksDto>>> GetCompaniesJobsLinks([FromQuery]UserParams userParams)
         {     
             
-            IEnumerable<GetCompaniesJobsLinksDto> jobs = null;
+            PagedList<GetCompaniesJobsLinksDto> jobs = null;
 
             //Claims only works if the client sends the token, so from there it gets the user
             //Get the current User logged in
@@ -93,7 +95,7 @@ namespace API.Controllers
     
             if(name == null)
             {
-                jobs = await _informationRepository.GetCompaniesJobsLinksAllUsers();
+                jobs = await _informationRepository.GetCompaniesJobsLinksAllUsers(userParams);
             }
             else
             {
@@ -103,9 +105,12 @@ namespace API.Controllers
                 {
                     return BadRequest();
                 }
-                jobs = await _informationRepository.GetCompaniesJobsLinksLoggedInUser(user.Id);
+                jobs = await _informationRepository.GetCompaniesJobsLinksLoggedInUser(userParams,user.Id);
             }
-           
+
+                Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize, 
+                jobs.TotalCount, jobs.TotalPages);
+
               return Ok(jobs);
         }
 
