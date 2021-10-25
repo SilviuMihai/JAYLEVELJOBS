@@ -46,21 +46,25 @@ export class InformationsService {
     //Gets the initial values
     var response = this.companyJobsLinksCache.get(Object.values(pageParameters).join('-'));
 
+    if(!(this.userStatus === this.getUserStatus())) { // Checks if the user is logged in or logged out
+      this.companyJobsLinksCache.clear(); // Clears the cache, when the user changes status from logged in to logged out or vice versa
+      response = null; //Was set the value null, because the user change their status - logged out or logged in
+    }
     //If the response is empty will not return the cached values
         if(response) {
-          if(this.userStatus === this.getUserStatus()) { // Checks if the user is logged in or logged out
+          //if(this.userStatus === this.getUserStatus()) { // Checks if the user is logged in or logged out
             return of(response).pipe(map(response => {
               //PaginatedResult.result is getting the values about the Companies
               //doesn't need the values about the pagination, because already has them
               this.paginatedResult.result = response.body;
               return this.paginatedResult;
             }));
-          }
+         /*  }
           else {
             this.companyJobsLinksCache.clear(); // Clear the cache, when the user changes status from logged in to logged out or vice versa
-          }
+          } */
         }
-        this.userStatus = this.getUserStatus();
+        this.userStatus = this.getUserStatus(); // Update the variable, so we can check the status, because the service object is not destroyed
     
 
     let params = new HttpParams();
