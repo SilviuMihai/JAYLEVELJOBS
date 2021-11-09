@@ -93,16 +93,44 @@ namespace API.Data.Repositories
 
         //Search for a specific job
         //Returns all the jobs that were found in the CompanyJobsLinksDB and projects them to GetCompaniesJobsLinksDto by using the AutoMapper
-        public async Task<IEnumerable<GetCompaniesJobsLinksDto>> SearchJob(string searchJob)
+        public async Task<PagedList<GetCompaniesJobsLinksDto>> SearchJob(string searchJob, int? userId, UserParams userParams)
         {
             var jobs = from s in _context.CompanyJobsLinksDB select s;
             
-            jobs = jobs.Where(s =>
-            s.ShortDescription.ToLower().Contains(searchJob) 
-            || 
-            s.NameURL.ToLower().Contains(searchJob));
-    
-            return  await jobs.ProjectTo<GetCompaniesJobsLinksDto>(_mapper.ConfigurationProvider).ToListAsync();
+            if(userId != null)
+            {
+                //Doesn't return the links by the user himself or by other users that past 3 reports
+                var jobsListLoggedInUser = jobs;
+                var jobsListOtherUsers = jobs;
+     
+                jobsListLoggedInUser = jobsListLoggedInUser.Where(x => x.AppUserId == userId && 
+                x.LinkNotAvailable == null && x.ReportedLink == null);
+
+                jobsListOtherUsers = jobsListOtherUsers.Where(x => x.AppUserId != userId && 
+                    (x.ReportedLink < 3 || x.LinkNotAvailable <3 || x.ReportedLink == null 
+                    || x.LinkNotAvailable == null));
+
+                jobs = jobsListLoggedInUser.Concat(jobsListOtherUsers);
+
+                jobs = jobs.Where(s =>
+                s.ShortDescription.ToLower().Contains(searchJob) 
+                || 
+                s.NameURL.ToLower().Contains(searchJob));
+            }
+            else
+            {
+                //Casual user, will return all jobs, except the reported ones that are above 3
+                jobs = jobs.Where(x=>x.ReportedLink < 3 || x.LinkNotAvailable <3 
+                || x.ReportedLink == null || x.LinkNotAvailable == null);
+                jobs = jobs.Where(s =>
+                s.ShortDescription.ToLower().Contains(searchJob) 
+                || 
+                s.NameURL.ToLower().Contains(searchJob));
+            }
+
+            var searchedJobs = jobs.ProjectTo<GetCompaniesJobsLinksDto>(_mapper.ConfigurationProvider);
+            
+            return await PagedList<GetCompaniesJobsLinksDto>.CreateAsync(searchedJobs, userParams.PageNumber, userParams.PageSize);
         }
 
         //Gets a Company Job Link by using the id of the company

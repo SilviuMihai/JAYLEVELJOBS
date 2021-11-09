@@ -14,7 +14,7 @@ namespace API.Interfaces
         Task<PagedList<GetCompaniesJobsLinksDto>> GetCompaniesJobsLinksLoggedInUser(UserParams userParams,int userId);
         Task<PagedList<GetCompaniesJobsLinksDto>> GetCompaniesJobsLinksAllUsers(UserParams userParams);
         Task<bool> GetNumberOfPosts(int id, DateTime date);
-        Task<IEnumerable<GetCompaniesJobsLinksDto>> SearchJob(string searchJob);
+        Task<PagedList<GetCompaniesJobsLinksDto>> SearchJob(string searchJob, int? userId, UserParams userParams);
         Task<CompanyJobsLinks> GetCompanyJobLink(int id);
         void AddChangesInCompanyJobsLinks(CompanyJobsLinks company);
         void RemoveCompanyJobLink(CompanyJobsLinks companyJobsLinks);

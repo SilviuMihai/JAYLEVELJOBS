@@ -32,6 +32,8 @@ import { PostCompanyJobsComponent } from './body/main-component/user-first-page/
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { SearchCompanyJobComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/search-company-job/search-company-job.component';
+import { PaginationSharedComponent } from './shared/Pagination/pagination-shared/pagination-shared.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     ServerErrorComponent,
     CompanyJobsLinksComponent,
     PostCompanyJobsComponent,
+    SearchCompanyJobComponent,
+    PaginationSharedComponent,
   ],
   imports: [
     BrowserModule,

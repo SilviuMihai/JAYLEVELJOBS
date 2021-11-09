@@ -116,18 +116,35 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("search-jobs-setbyusers")]
-        public async Task<ActionResult<IEnumerable<GetCompaniesJobsLinksDto>>>SearchJobs([FromBody]SearchJobsDto searchJobsDto)
+        public async Task<ActionResult<IEnumerable<GetCompaniesJobsLinksDto>>>SearchJobs([FromBody]SearchJobsDto searchJobsDto,[FromQuery]UserParams userParams)
         {
+
+            int? userId = null;
+
+            //Claims only works if the client sends the token, so from there it gets the user
+            //Get the current User logged in
+            //Returns a null, if the user is not logged in
+            var name =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(name != null)
+            {
+                var user = await _userManager.FindByNameAsync(name);
+                userId = user.Id;
+            }
 
             if(String.IsNullOrEmpty(searchJobsDto.SearchJob))
             {
                 return NotFound("Please try to add something in the search bar !");
             }
-            var jobs = await _informationRepository.SearchJob(searchJobsDto.SearchJob.ToLower());
+
+            var jobs = await _informationRepository.SearchJob(searchJobsDto.SearchJob.ToLower(), userId, userParams);
+            
             if(!jobs.Any())
             {
                 return NotFound("Nothing was found !");
             }
+
+            Response.AddPaginationHeader(jobs.CurrentPage, jobs.PageSize, 
+                jobs.TotalCount, jobs.TotalPages);
 
             return Ok(jobs);
         }

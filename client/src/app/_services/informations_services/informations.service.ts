@@ -27,9 +27,16 @@ export class InformationsService {
   //Used for caching in the memory of the browser so that
   //it doesn't make at every change of the page a request to the server
   companyJobsLinksCache =  new Map();
+  searchedCompaniesJobsLinksCache = new Map();
+  responseCachedAllJobs = null;
+  responseCachedSearchedJobs = null;
 
   //Check if the user is logged In or logged Out
   userStatus = false;
+
+  requestCompaniesJobs = false;
+  requestSearchedCompaniesJobs = false;
+  userSearchTextOldValue = "";
 
   constructor(private http: HttpClient, private accountService: AccountService) {  }
 
@@ -42,18 +49,25 @@ export class InformationsService {
 
   //GET Request - Gets Jobs Links
   getCompaniesLink(pageParameters:PageParameters) {
-
+    this.searchedCompaniesJobsLinksCache.clear();
+    this.responseCachedSearchedJobs = null;
+   /*  //Clear the old values in the cache variable, if the user wants to see all the current jobs
+    this.requestCompaniesJobs = false;
+    if (this.requestCompaniesJobs !== this.requestSearchedCompaniesJobs ) {
+      this.companyJobsLinksCache.clear();
+      this.requestSearchedCompaniesJobs = false;
+    } */
     //Gets the initial values
-    var response = this.companyJobsLinksCache.get(Object.values(pageParameters).join('-'));
+    this.responseCachedAllJobs = this.companyJobsLinksCache.get(Object.values(pageParameters).join('-'));
 
     if(!(this.userStatus === this.getUserStatus())) { // Checks if the user is logged in or logged out
       this.companyJobsLinksCache.clear(); // Clears the cache, when the user changes status from logged in to logged out or vice versa
-      response = null; //Was set the value null, because the user change their status - logged out or logged in
+      this.responseCachedAllJobs = null; //Was set the value null, because the user change their status - logged out or logged in
     }
     //If the response is empty will not return the cached values
-        if(response) {
+        if(this.responseCachedAllJobs) {
           //if(this.userStatus === this.getUserStatus()) { // Checks if the user is logged in or logged out
-            return of(response).pipe(map(response => {
+            return of(this.responseCachedAllJobs).pipe(map(response => {
               //PaginatedResult.result is getting the values about the Companies
               //doesn't need the values about the pagination, because already has them
               this.paginatedResult.result = response.body;
@@ -90,9 +104,99 @@ export class InformationsService {
     }));
   }
 
+
+
   //POST Request - Search functionality by using a POST and returning the values
-  getCompaniesSearchedByUser(model: SearchJobs) {
-    return this.http.post<CompanyLinks[]>(this.baseUrl + "information/search-jobs-setbyusers/",model);
+  getCompaniesSearchedByUser(model: SearchJobs, pageParameters:PageParameters) {
+    this.companyJobsLinksCache.clear();
+    this.responseCachedAllJobs = null;
+
+    if(this.userSearchTextOldValue !== model.searchJob)
+    {
+      this.userSearchTextOldValue = model.searchJob;
+      //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
+      pageParameters.pageNumber = 1; 
+      //---
+      this.searchedCompaniesJobsLinksCache.clear(); //clear the cache if the user searches other things
+      this.responseCachedSearchedJobs = null;
+    }
+    /* //Condition added, so that the user can search everytime, when he changes his mind
+    if(this.userSearchTextOldValue === "")
+    {
+       //Values set to 1, because in case of the user searches something in page 2 or upper/ or it is in all jobs and starts searching, will not search it in that respective page
+       pageParameters.pageNumber = 1; 
+       pageParameters.pageSize = 5;
+      this.userSearchTextOldValue = model.searchJob;
+    }else if(this.userSearchTextOldValue !== model.searchJob)
+    {
+      this.userSearchTextOldValue = model.searchJob;
+      //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
+      pageParameters.pageNumber = 1; 
+      pageParameters.pageSize = 5;
+      //---
+      this.companyJobsLinksCache.clear(); //clear the cache if the user searches other things
+      response = null;
+    }else if(this.userSearchTextOldValue === model.searchJob) // nu este corect ce este aici
+    {// mai bine folosesti alt parametru de cache si faci clear la celalalt
+      this.userSearchTextOldValue = model.searchJob;
+      //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
+      pageParameters.pageNumber = 1; 
+      pageParameters.pageSize = 5;
+      //---
+      this.companyJobsLinksCache.clear(); //clear the cache if the user searches other things
+      response = null;
+    } */
+
+  /*   //Clear the old values in the cache variable, if the user starts searching something
+    this.requestSearchedCompaniesJobs = true;
+    if (this.requestCompaniesJobs !== this.requestSearchedCompaniesJobs ) {
+      pageParameters.pageNumber = 1;
+      this.companyJobsLinksCache.clear();
+      this.requestCompaniesJobs = true;
+    } */
+    //Gets the initial values
+    this.responseCachedSearchedJobs = this.searchedCompaniesJobsLinksCache.get(Object.values(pageParameters).join('-'));
+
+    if(!(this.userStatus === this.getUserStatus())) { // Checks if the user is logged in or logged out
+      this.searchedCompaniesJobsLinksCache.clear(); // Clears the cache, when the user changes status from logged in to logged out or vice versa
+      this.responseCachedSearchedJobs = null; //Was set the value null, because the user change their status - logged out or logged in
+    }
+    //If the response is empty will not return the cached values
+        if(this.responseCachedSearchedJobs) {
+          //if(this.userStatus === this.getUserStatus()) { // Checks if the user is logged in or logged out
+            return of(this.responseCachedSearchedJobs).pipe(map(response => {
+              //PaginatedResult.result is getting the values about the Companies
+              //doesn't need the values about the pagination, because already has them
+              this.paginatedResult.result = response.body;
+              return this.paginatedResult;
+            }));
+         /*  }
+          else {
+            this.companyJobsLinksCache.clear(); // Clear the cache, when the user changes status from logged in to logged out or vice versa
+          } */
+        }
+        this.userStatus = this.getUserStatus(); // Update the variable, so we can check the status, because the service object is not destroyed
+    
+
+    let params = new HttpParams();
+
+    if(pageParameters.pageNumber !== null && pageParameters.pageSize !== null) {
+      params = params.append('pageNumber', pageParameters.pageNumber.toString());
+      params = params.append('pageSize', pageParameters.pageSize.toString());
+    }
+    return this.http.post<CompanyLinks[]>(this.baseUrl + "information/search-jobs-setbyusers/",model,{observe: 'response', params}).pipe(map(response => {
+      //PaginatedResult.result is getting the values about the Companies
+      this.paginatedResult.result = response.body;
+      if(response.headers.get('Pagination') !== null) {
+        //PaginatedResult.pagination is getting the values about the pagination
+        this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+      }
+
+      //After it gets the values from the server, it will cache the response
+      this.searchedCompaniesJobsLinksCache.set(Object.values(pageParameters).join('-'),response);
+      
+      return this.paginatedResult;
+    }));
   }
 
   //PUT Request - Reports a link that may contain a bad link
