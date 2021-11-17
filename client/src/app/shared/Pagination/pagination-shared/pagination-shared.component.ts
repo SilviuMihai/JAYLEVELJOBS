@@ -10,8 +10,14 @@ import { SharingDataServiceService } from 'src/app/_services/shared/sharing-data
   styleUrls: ['./pagination-shared.component.css']
 })
 export class PaginationSharedComponent implements OnInit, OnDestroy {
+  subscription: Subscription;
 
-  constructor(private sharedDataService: SharingDataServiceService) { }
+  pagination = new Pagination();  
+  pageParameters = new PageParameters();
+
+  constructor(private sharedDataService: SharingDataServiceService) { 
+    console.log("Pagination Shared Constructor Entered !")
+  }
 
   ngOnInit(): void {
     this.subscription = this.sharedDataService.receiveValuesPagination().subscribe(response => { this.pagination = response; });
@@ -20,10 +26,6 @@ export class PaginationSharedComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     this.subscription.unsubscribe();
   }
-  subscription: Subscription;
-
-  pagination = new Pagination();
-  pageParameters = new PageParameters();
 
   pageChanged(event: any) {
     this.pageParameters.pageNumber = event.page;

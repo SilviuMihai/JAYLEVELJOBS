@@ -51,12 +51,6 @@ export class InformationsService {
   getCompaniesLink(pageParameters:PageParameters) {
     this.searchedCompaniesJobsLinksCache.clear();
     this.responseCachedSearchedJobs = null;
-   /*  //Clear the old values in the cache variable, if the user wants to see all the current jobs
-    this.requestCompaniesJobs = false;
-    if (this.requestCompaniesJobs !== this.requestSearchedCompaniesJobs ) {
-      this.companyJobsLinksCache.clear();
-      this.requestSearchedCompaniesJobs = false;
-    } */
     //Gets the initial values
     this.responseCachedAllJobs = this.companyJobsLinksCache.get(Object.values(pageParameters).join('-'));
 
@@ -116,44 +110,10 @@ export class InformationsService {
       this.userSearchTextOldValue = model.searchJob;
       //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
       pageParameters.pageNumber = 1; 
-      //---
       this.searchedCompaniesJobsLinksCache.clear(); //clear the cache if the user searches other things
       this.responseCachedSearchedJobs = null;
     }
-    /* //Condition added, so that the user can search everytime, when he changes his mind
-    if(this.userSearchTextOldValue === "")
-    {
-       //Values set to 1, because in case of the user searches something in page 2 or upper/ or it is in all jobs and starts searching, will not search it in that respective page
-       pageParameters.pageNumber = 1; 
-       pageParameters.pageSize = 5;
-      this.userSearchTextOldValue = model.searchJob;
-    }else if(this.userSearchTextOldValue !== model.searchJob)
-    {
-      this.userSearchTextOldValue = model.searchJob;
-      //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
-      pageParameters.pageNumber = 1; 
-      pageParameters.pageSize = 5;
-      //---
-      this.companyJobsLinksCache.clear(); //clear the cache if the user searches other things
-      response = null;
-    }else if(this.userSearchTextOldValue === model.searchJob) // nu este corect ce este aici
-    {// mai bine folosesti alt parametru de cache si faci clear la celalalt
-      this.userSearchTextOldValue = model.searchJob;
-      //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
-      pageParameters.pageNumber = 1; 
-      pageParameters.pageSize = 5;
-      //---
-      this.companyJobsLinksCache.clear(); //clear the cache if the user searches other things
-      response = null;
-    } */
-
-  /*   //Clear the old values in the cache variable, if the user starts searching something
-    this.requestSearchedCompaniesJobs = true;
-    if (this.requestCompaniesJobs !== this.requestSearchedCompaniesJobs ) {
-      pageParameters.pageNumber = 1;
-      this.companyJobsLinksCache.clear();
-      this.requestCompaniesJobs = true;
-    } */
+    
     //Gets the initial values
     this.responseCachedSearchedJobs = this.searchedCompaniesJobsLinksCache.get(Object.values(pageParameters).join('-'));
 

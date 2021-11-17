@@ -14,9 +14,9 @@
                                     </div>
                         </div>
                         <div *ngIf="setPage" class="col-9 ml-4">  
-                                    <app-search-company-job (itemEvent)="receiveValueEventSearchBar($event)"
-                                    [setPageForSearchBar]="setPageForSearchBar"
-                                    ></app-search-company-job>
+                                    <app-search-company-job 
+                                    (itemEvent)="receiveValueEventSearchBar($event)">
+                                    </app-search-company-job>
                         </div>
                     </div>
                 </div>
@@ -50,9 +50,7 @@
                                     </div>
                                     <div class="col-2">
                                         <p><strong>Report Link</strong></p>
-                                    </div>
-
-                    
+                                    </div>                  
                             </div>
                         </li>
                         <li class="list-group-item list-group-item-action" *ngFor="let item of getJobs">
@@ -90,10 +88,16 @@
 
         <div *ngIf="setPage" class="row">
             <div class="col">
-                    <app-pagination-shared></app-pagination-shared>
+                    <div *ngIf="setPageForSearchBar else elseBlock">
+                        <app-pagination-shared></app-pagination-shared>
+                    </div>
+                    <ng-template #elseBlock>
+                        <app-pagination-for-searching 
+                        (itemEvent)="receiveValueEventJobs($event)">
+                        </app-pagination-for-searching>
+                    </ng-template>
             </div>
         </div>
-
 </div>
 
 

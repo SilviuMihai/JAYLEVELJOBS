@@ -27,15 +27,15 @@ export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
  
  
    //Pagination
-   pagination = new Pagination();
    pageParameters = new PageParameters();
    pageNumberOldValue = 1;
    subscription: Subscription;
- 
    /* ----------------- */
 
   constructor(public accountService: AccountService,private informationService: InformationsService, 
-    private toastr: ToastrService, private sharedDataService: SharingDataServiceService) {}
+    private toastr: ToastrService, private sharedDataService: SharingDataServiceService) {
+      console.log("Company Constructor Entered !")
+     }
 
  
   ngOnInit(): void {
@@ -106,9 +106,13 @@ export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
   //child component - to parent component event
   //this is the parent component
   receiveValueEventSearchBar($event) {
-    this.sharedValues = $event;
-    this.setPageForSearchBar = this.sharedValues.setPageForSearchBar;
-    this.getJobs = this.sharedValues.getjobs;
+    this.setPageForSearchBar =  $event;    
+  }
+
+  //child component - to parent component event
+  //this is the parent component
+  receiveValueEventJobs($event) {
+    this.getJobs = $event;
   }
 
   /* getCurrentUser()

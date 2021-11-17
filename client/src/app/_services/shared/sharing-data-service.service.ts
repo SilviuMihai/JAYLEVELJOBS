@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AsyncSubject, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { SearchJobs } from 'src/app/_models/informations/SearchJobs';
 import { PageParameters } from 'src/app/_models/pagination/PageParameters';
 import { Pagination } from 'src/app/_models/pagination/pagination';
 
@@ -9,12 +10,10 @@ import { Pagination } from 'src/app/_models/pagination/pagination';
 export class SharingDataServiceService {
 
   constructor() {}
-
-  pagination = new Pagination();
-  pageParameters = new PageParameters();
   
    private sharedDataPagination = new ReplaySubject<Pagination>();
    private sharedDataPageParameters = new ReplaySubject<PageParameters>();
+   private sharedDataSearchedValue = new ReplaySubject<SearchJobs>();
   
   /* Pagination */
   receiveValuesPagination() {
@@ -35,4 +34,14 @@ export class SharingDataServiceService {
     this.sharedDataPageParameters.next(valuesSent);
   }
   /* PageParameters */
+
+  /* SearchJobs */
+  receiveValueSearchJob() {
+    return this.sharedDataSearchedValue.asObservable();
+  }
+
+  sendValueSearchJob(valuesSent: SearchJobs) {
+    this.sharedDataSearchedValue.next(valuesSent);
+  }
+  /* SearchJobs */
 }

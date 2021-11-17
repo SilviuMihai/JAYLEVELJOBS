@@ -34,6 +34,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SearchCompanyJobComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/search-company-job/search-company-job.component';
 import { PaginationSharedComponent } from './shared/Pagination/pagination-shared/pagination-shared.component';
+import { PaginationForSearchingComponent } from './body/main-component/user-first-page/home-page/company-jobs-links/pagination-for-searching/pagination-for-searching.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { PaginationSharedComponent } from './shared/Pagination/pagination-shared
     PostCompanyJobsComponent,
     SearchCompanyJobComponent,
     PaginationSharedComponent,
+    PaginationForSearchingComponent,
   ],
   imports: [
     BrowserModule,
