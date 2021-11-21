@@ -33,9 +33,7 @@ export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
    /* ----------------- */
 
   constructor(public accountService: AccountService,private informationService: InformationsService, 
-    private toastr: ToastrService, private sharedDataService: SharingDataServiceService) {
-      console.log("Company Constructor Entered !")
-     }
+    private toastr: ToastrService, private sharedDataService: SharingDataServiceService) { }
 
  
   ngOnInit(): void {

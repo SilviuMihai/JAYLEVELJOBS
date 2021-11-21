@@ -15,9 +15,7 @@ export class PaginationSharedComponent implements OnInit, OnDestroy {
   pagination = new Pagination();  
   pageParameters = new PageParameters();
 
-  constructor(private sharedDataService: SharingDataServiceService) { 
-    console.log("Pagination Shared Constructor Entered !")
-  }
+  constructor(private sharedDataService: SharingDataServiceService) { }
 
   ngOnInit(): void {
     this.subscription = this.sharedDataService.receiveValuesPagination().subscribe(response => { this.pagination = response; });

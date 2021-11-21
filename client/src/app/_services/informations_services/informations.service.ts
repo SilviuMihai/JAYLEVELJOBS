@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { CompanyLinks } from 'src/app/_models/informations/CompanyLinks';
 import { SearchJobs } from 'src/app/_models/informations/SearchJobs';
 import { PageParameters } from 'src/app/_models/pagination/PageParameters';
@@ -31,6 +31,9 @@ export class InformationsService {
   responseCachedAllJobs = null;
   responseCachedSearchedJobs = null;
 
+  //Used for deleting the cache when the user reports a link
+  PageNumber = 1;
+
   //Check if the user is logged In or logged Out
   userStatus = false;
 
@@ -49,11 +52,12 @@ export class InformationsService {
 
   //GET Request - Gets Jobs Links
   getCompaniesLink(pageParameters:PageParameters) {
+    this.PageNumber = pageParameters.pageNumber;
     this.searchedCompaniesJobsLinksCache.clear();
     this.responseCachedSearchedJobs = null;
     //Gets the initial values
     this.responseCachedAllJobs = this.companyJobsLinksCache.get(Object.values(pageParameters).join('-'));
-
+  
     if(!(this.userStatus === this.getUserStatus())) { // Checks if the user is logged in or logged out
       this.companyJobsLinksCache.clear(); // Clears the cache, when the user changes status from logged in to logged out or vice versa
       this.responseCachedAllJobs = null; //Was set the value null, because the user change their status - logged out or logged in
@@ -102,6 +106,7 @@ export class InformationsService {
 
   //POST Request - Search functionality by using a POST and returning the values
   getCompaniesSearchedByUser(model: SearchJobs, pageParameters:PageParameters) {
+    this.PageNumber = pageParameters.pageNumber;
     this.companyJobsLinksCache.clear();
     this.responseCachedAllJobs = null;
 
@@ -161,11 +166,27 @@ export class InformationsService {
 
   //PUT Request - Reports a link that may contain a bad link
   reportCompanyJobLink(id:number){
+    //Clearing the cache, when the user reports a link
+    if(this.companyJobsLinksCache.has(this.PageNumber + '-5')) {
+      this.companyJobsLinksCache.delete(this.PageNumber + '-5');
+    }
+    else {
+      this.searchedCompaniesJobsLinksCache.delete(this.PageNumber + '-5');
+    }
+    
     return this.http.put(this.baseUrl+"information/reported-link/"+id,{});
   }
 
   //PUT Request - Reports that the link is not available anymore
   linkNotAvailable(id:number){
+    //Clearing the cache, when the user reports a link
+    if(this.companyJobsLinksCache.has(this.PageNumber + '-5')) {
+      this.companyJobsLinksCache.delete(this.PageNumber + '-5');
+    }
+    else {
+      this.searchedCompaniesJobsLinksCache.delete(this.PageNumber + '-5');
+    }
+   
     return this.http.put(this.baseUrl+"information/link-not-available/"+id,{});
   }
 
