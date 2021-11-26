@@ -1,7 +1,0 @@
-<form class="input-group ml-2" (ngSubmit)="searchBar.valid && getSearchedJobs()">
-    <div class="input-group-prepend"><button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary">Search</button></div>
-    <input type="search" [formControl]="searchBar" class="form-control ml-2"
-    [class.is-invalid]='searchBar.errors && searchBar.touched'>
-    <div *ngIf="searchBar.hasError('minlength') || searchBar.hasError('maxlength')"  class="invalid-feedback">Please enter between 3-50 characters !</div>
-    <div *ngIf="searchBar.hasError('required')"  class="invalid-feedback">Please enter a value !</div>
-</form>

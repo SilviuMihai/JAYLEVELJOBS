@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { AfterViewInit, Component,  DoCheck,  EventEmitter,  OnDestroy,  OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -16,20 +17,28 @@ import { SharingDataServiceService } from 'src/app/_services/shared/sharing-data
   templateUrl: './company-jobs-links.component.html',
   styleUrls: ['./company-jobs-links.component.css']
 })
-export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
+export class CompanyJobsLinksComponent implements OnInit {
 
    /* -- Initialize Variables or Declare -- */
-   setPageForSearchBar = true;
    setPage = true;
    //loggedIn = false;
    getJobs: CompanyLinks[];
-   sharedValues = new SharedValuesCompanyJobsLinks();
+   /* ----------------- */
+
+   /* --- Searching --- */
+   searchBar = new FormControl('',[Validators.minLength(3),Validators.maxLength(50),Validators.required]);
+   oldSearchedValue = "";
+   /* ----------------- */
  
  
-   //Pagination
-   pageParameters = new PageParameters();
+   /* --- Pagination --- */
+   paginationForAllJobs: Pagination;
+   paginationForSearching: Pagination;
+   pageParametersForAllJobs = new PageParameters();
+   pageParametersForSearchedJobs = new PageParameters();
    pageNumberOldValue = 1;
    subscription: Subscription;
+   AllJobsOrSearchedJobs = true;
    /* ----------------- */
 
   constructor(public accountService: AccountService,private informationService: InformationsService, 
@@ -37,32 +46,36 @@ export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
 
  
   ngOnInit(): void {
-      //this.getCurrentUser();
-        this.subscription = this.sharedDataService.receiveValuesPageParameters().subscribe(response => this.pageParameters = response);
         this.getCompaniesLinks();   
   }
-  ngDoCheck(): void {
-    if(this.setPage && this.setPageForSearchBar)
-    {
-      if(this.pageNumberOldValue !== this.pageParameters.pageNumber)
-      {
-        this.getCompaniesLinks();
-      }
-      this.pageNumberOldValue = this.pageParameters.pageNumber;
+  
+
+/* -- Functions --  */
+  getSearchedJobs() {
+    this.AllJobsOrSearchedJobs = false;
+    let model = new SearchJobs();
+    model.searchJob = this.searchBar.value;
+
+    if(model.searchJob != this.oldSearchedValue) {
+      this.paginationForSearching = null;
+      this.pageParametersForSearchedJobs.pageNumber = 1;
     }
-  }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+    this.oldSearchedValue = model.searchJob;
 
-
-  /* -- Functions --  */
-  getCompaniesLinks() {
-    this.informationService.getCompaniesLink(this.pageParameters).subscribe(response =>{ 
+    this.informationService.getCompaniesSearchedByUser(model,this.pageParametersForSearchedJobs).subscribe(response=>{
       this.getJobs = response.result;
-      this.sharedDataService.sendValuesPagination(response.pagination);
+      this.paginationForSearching = response.pagination;
     });
-    this.setPageForSearchBar = true;
+  }
+
+  getCompaniesLinks() {
+    this.AllJobsOrSearchedJobs = true;
+    this.paginationForSearching = null;
+    this.informationService.getCompaniesLink(this.pageParametersForAllJobs).subscribe(response =>{ 
+      this.getJobs = response.result;
+      //this.sharedDataService.sendValuesPagination(response.pagination);
+      this.paginationForAllJobs = response.pagination;
+    });
     this.getJobsPage();
   }
 
@@ -88,6 +101,17 @@ export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
     );
   }
 
+  pageChanged(event: any) {
+    if(this.AllJobsOrSearchedJobs) {
+      this.pageParametersForAllJobs.pageNumber = event.page;
+      this.getCompaniesLinks();
+    }
+    else {
+      this.pageParametersForSearchedJobs.pageNumber = event.page;
+      this.getSearchedJobs();
+    }
+  }
+
   getJobsPage(){
     this.setPage = true;
   }
@@ -99,18 +123,6 @@ export class CompanyJobsLinksComponent implements OnInit, DoCheck, OnDestroy {
   //this is the parent component
   receiveValueEventPostJob($event) {
     this.setPage = $event;
-  }
-
-  //child component - to parent component event
-  //this is the parent component
-  receiveValueEventSearchBar($event) {
-    this.setPageForSearchBar =  $event;    
-  }
-
-  //child component - to parent component event
-  //this is the parent component
-  receiveValueEventJobs($event) {
-    this.getJobs = $event;
   }
 
   /* getCurrentUser()

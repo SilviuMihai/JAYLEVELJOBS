@@ -109,18 +109,17 @@ export class InformationsService {
     this.PageNumber = pageParameters.pageNumber;
     this.companyJobsLinksCache.clear();
     this.responseCachedAllJobs = null;
+   
+    //Gets the initial values
+    this.responseCachedSearchedJobs = this.searchedCompaniesJobsLinksCache.get(Object.values(pageParameters).join('-'));
 
     if(this.userSearchTextOldValue !== model.searchJob)
     {
       this.userSearchTextOldValue = model.searchJob;
-      //Values set to 1, because in case of the user searches something in page 2 or upper, will not search it in that respective page
-      pageParameters.pageNumber = 1; 
+    
       this.searchedCompaniesJobsLinksCache.clear(); //clear the cache if the user searches other things
       this.responseCachedSearchedJobs = null;
     }
-    
-    //Gets the initial values
-    this.responseCachedSearchedJobs = this.searchedCompaniesJobsLinksCache.get(Object.values(pageParameters).join('-'));
 
     if(!(this.userStatus === this.getUserStatus())) { // Checks if the user is logged in or logged out
       this.searchedCompaniesJobsLinksCache.clear(); // Clears the cache, when the user changes status from logged in to logged out or vice versa
@@ -188,6 +187,11 @@ export class InformationsService {
     }
    
     return this.http.put(this.baseUrl+"information/link-not-available/"+id,{});
+  }
+
+  //DELETE Request - Removes the post that the user created it
+  deleteLink(id:number) {
+    return this.http.delete(this.baseUrl + "information/delete-company-job-link/" + id);
   }
 
   //Check if the user is logged In or logged Out

@@ -14,9 +14,13 @@
                                     </div>
                         </div>
                         <div *ngIf="setPage" class="col-9 ml-4">  
-                                    <app-search-company-job 
-                                    (itemEvent)="receiveValueEventSearchBar($event)">
-                                    </app-search-company-job>
+                                    <form class="input-group ml-2" (ngSubmit)="searchBar.valid && getSearchedJobs()">
+                                        <div class="input-group-prepend"><button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary">Search</button></div>
+                                        <input type="search" [formControl]="searchBar" class="form-control ml-2"
+                                        [class.is-invalid]='searchBar.errors && searchBar.touched'>
+                                        <div *ngIf="searchBar.hasError('minlength') || searchBar.hasError('maxlength')"  class="invalid-feedback">Please enter between 3-50 characters !</div>
+                                        <div *ngIf="searchBar.hasError('required')"  class="invalid-feedback">Please enter a value !</div>
+                                    </form>
                         </div>
                     </div>
                 </div>
@@ -88,14 +92,19 @@
 
         <div *ngIf="setPage" class="row">
             <div class="col">
-                    <div *ngIf="setPageForSearchBar else elseBlock">
-                        <app-pagination-shared></app-pagination-shared>
+                    <div class="d-flex justify-content-center" *ngIf="AllJobsOrSearchedJobs === true ? paginationForAllJobs : paginationForSearching">
+                        <pagination
+                        [boundaryLinks]="showBoundaryLinks"
+                        [totalItems]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalItems : paginationForSearching.totalItems"
+                        [itemsPerPage]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.itemsPerPage : paginationForSearching.itemsPerPage"
+                        [(ngModel)]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.currentPage : paginationForSearching.currentPage"
+                        (pageChanged)="pageChanged($event)"
+                        ></pagination>
+                        <!-- [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  -->
+                        <!-- (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method -->
+                        <div class="ml-4"><button type="button" class="btn btn-info"
+                            (click)="showBoundaryLinks = !showBoundaryLinks">Show First/Last buttons</button></div>
                     </div>
-                    <ng-template #elseBlock>
-                        <app-pagination-for-searching 
-                        (itemEvent)="receiveValueEventJobs($event)">
-                        </app-pagination-for-searching>
-                    </ng-template>
             </div>
         </div>
 </div>
