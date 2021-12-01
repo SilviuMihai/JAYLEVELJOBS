@@ -66,11 +66,11 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     SharedModule,
     ToastrModule.forRoot({positionClass: 'toast-bottom-right'}), // ToastrModule added
     BsDatepickerModule.forRoot(),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })

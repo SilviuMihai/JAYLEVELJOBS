@@ -1,14 +1,24 @@
-  <app-nav-bar></app-nav-bar>
- 
-        <div class="container-fluid">
-                <div class="row">
-                        <div class="col-2 mh-100" style="padding: 0%;">
-                                <app-side-bar></app-side-bar>
-                        </div>
-                        <div class="col-10">
-                                <router-outlet></router-outlet>  <!-- to access the pages via routing -->
-                        </div>
+<div class="container-fluid vh-100">
+        <div class="row h-20">
+                <div class="col h-20 bg-primary text-white"><p>hello</p></div>
+        </div>
+        <div class="row">
+                <div class="col" style="padding: 0%;">
+                        <app-nav-bar></app-nav-bar>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-2" style="padding: 0%;">
+                        <app-side-bar></app-side-bar>
+                </div>
+                <div class="col-10">
+                        <router-outlet></router-outlet>  <!-- to access the pages via routing -->
                 </div>
         </div>  
            
-<app-footer-bar></app-footer-bar>
+        <div class="row">
+                <div class="col" style="padding: 0%;">
+                        <app-footer-bar></app-footer-bar>
+                </div>
+        </div>
+</div>

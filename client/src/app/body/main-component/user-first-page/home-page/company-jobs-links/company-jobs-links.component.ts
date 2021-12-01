@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { AfterViewInit, Component,  DoCheck,  EventEmitter,  OnDestroy,  OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component,  DoCheck,  EventEmitter,  OnDestroy,  OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ import { SharingDataServiceService } from 'src/app/_services/shared/sharing-data
 @Component({
   selector: 'app-company-jobs-links',
   templateUrl: './company-jobs-links.component.html',
-  styleUrls: ['./company-jobs-links.component.css']
+  styleUrls: ['./company-jobs-links.component.css'],
 })
 export class CompanyJobsLinksComponent implements OnInit {
 
