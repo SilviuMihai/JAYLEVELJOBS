@@ -4,23 +4,28 @@
                 <div class="col">
                     <div class="container-fluid">
                         <div class="row mb-3">
-                            <div class="col-2 mr-2">
-                                        <div class="list-group list-group-horizontal">
-                                            <button (click)='getCompaniesLinks()'
-                                                class="btn btn-info">See all Jobs</button>
-                                            <button (click)='postJobsPage()' *ngIf="accountService.currentUser$ | async"
-                                                [disabled]="!setPage"
-                                                class="btn btn-primary ml-2">Post a Job</button>
-                                        </div>
-                            </div>
-                            <div *ngIf="setPage" class="col-9 ml-4">
-                                        <form class="input-group ml-2" (ngSubmit)="searchBar.valid && getSearchedJobs()">
-                                            <div class="input-group-prepend"><button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary">Search</button></div>
-                                            <input type="search" [formControl]="searchBar" class="form-control ml-2"
-                                            [class.is-invalid]='searchBar.errors && searchBar.touched'>
-                                            <div *ngIf="searchBar.hasError('minlength') || searchBar.hasError('maxlength')"  class="invalid-feedback">Please enter between 3-50 characters !</div>
-                                            <div *ngIf="searchBar.hasError('required')"  class="invalid-feedback">Please enter a value !</div>
-                                        </form>
+                            <div class="col">
+                                <div class="list-group list-group-horizontal" >                                 
+                                        <button (click)='getCompaniesLinks()'
+                                                        class="btn btn-info mr-2">See all Jobs</button>
+                                    
+                                        <button (click)='postJobsPage()' *ngIf="accountService.currentUser$ | async"
+                                                        [disabled]="!setPage"
+                                                        class="btn btn-primary mr-2">Post a Job</button>
+                                   
+                                            <form class="w-100" (ngSubmit)="searchBar.valid && getSearchedJobs()" *ngIf="setPage">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary">Search</button>
+                                                    </div>
+                                                    <input type="search" [formControl]="searchBar" class="form-control" placeholder="Search Job"
+                                                    [class.is-invalid]='searchBar.errors && searchBar.touched'>
+                                                        <div *ngIf="searchBar.hasError('minlength') || searchBar.hasError('maxlength')"
+                                                            class="invalid-feedback">Please enter between 3-50 characters !</div>
+                                                        <div *ngIf="searchBar.hasError('required')"  class="invalid-feedback">Please enter a value !</div>
+                                                </div>
+                                            </form>
+                                </div>
                             </div>
                         </div>
                     </div>
