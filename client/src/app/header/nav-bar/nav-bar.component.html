@@ -1,38 +1,40 @@
- <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <div class="container-fluid">
-        
-        <div class="row">
-          <a class="ml-1 navbar-brand" routerLink='/'>Junior/Entry Level Jobs</a>
-          <a class="ml-3 justify-content-start nav-link text-white" routerLink='/'>Home</a>
-          <a class="ml-3 justify-content-start nav-link text-white" routerLink='/errors'>Errors</a>
-        </div>
-        
-        
-            <ul class="navbar-nav justify-content-end" *ngIf="!loggedIn">
-              <li class="nav-item">
-                <a class="nav-link" routerLink='/login-page' routerLinkActive='active'>Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" routerLink='/register-page' routerLinkActive='active'>Register</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" routerLink='/forgot-password' routerLinkActive='active'>Forgot Password</a>
-              </li>
-            </ul>
-
-                    <div *ngIf="loggedIn">
-                      <div class="row">
-                        <div class="dropdown justify-content-end mr-4"  dropdown>
-                          <a class="dropdown-toggle text-light" dropdownToggle>{{userEmail}}</a>
-                          <div class="dropdown-menu" *dropdownMenu>
-                            <a class="dropdown-item" href="#">Profile</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" routerLink='/change-password'>Change Password</a>
+ <nav class="nav bg-dark">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+   
+               <div class="d-flex">
+                 <a class="ml-1 navbar-brand text-white" routerLink='/'>Junior/Entry Level Jobs</a>
+                 <a class="ml-1 nav-link text-white" routerLink='/errors'>Errors</a>
+               </div>
+   
+    </div>
+    <div class="col d-flex justify-content-end">
+  
+                  <ul class="nav" *ngIf="!loggedIn">
+                    <li class="nav-item">
+                      <a class="nav-link text-white" routerLink='/login-page' routerLinkActive='active'>Login</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-white" routerLink='/register-page' routerLinkActive='active'>Register</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-white" routerLink='/forgot-password' routerLinkActive='active'>Forgot Password</a>
+                    </li>
+                  </ul>
+  
+                      <div class="d-flex align-items-center" *ngIf="loggedIn">
+                          <div class="dropdown mr-4"  dropdown>
+                            <a class="dropdown-toggle text-light" dropdownToggle>{{userEmail}}</a>
+                            <div class="dropdown-menu" *dropdownMenu>
+                              <a class="dropdown-item" href="#">Profile</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" routerLink='/change-password'>Change Password</a>
+                            </div>
                           </div>
-                        </div>
-                        <a class="text-white mr-3 set-cursor" (click)="logout()">LogOut</a>
+                          <a class="text-white mr-3 set-cursor" (click)="logout()">LogOut</a>
                       </div>
-                    </div>
-                  
-      </div>
+    </div>
+  </div>
+</div>                 
 </nav>
