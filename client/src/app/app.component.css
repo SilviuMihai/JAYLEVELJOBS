@@ -1,0 +1,15 @@
+.navbar-collapse {
+    position: fixed;
+    height: 100%;
+}
+
+.navbar-collapse.collapsing {
+    left: -75%;
+    height: auto;
+    transition: height 0s ease;
+}
+
+.navbar-collapse.show {
+    left: 0;
+    transition: left 300ms ease-in-out;
+}

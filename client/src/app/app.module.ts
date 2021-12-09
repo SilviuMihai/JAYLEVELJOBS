@@ -32,6 +32,8 @@ import { PostCompanyJobsComponent } from './body/main-component/user-first-page/
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,9 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     ToastrModule.forRoot({positionClass: 'toast-bottom-right'}), // ToastrModule added
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    CollapseModule.forRoot(),
+    TooltipModule.forRoot()
+    
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

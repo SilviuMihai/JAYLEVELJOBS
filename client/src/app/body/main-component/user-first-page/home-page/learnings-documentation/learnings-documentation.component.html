@@ -1,1 +1,8 @@
-<p class="min-vh-100">learnings-documentation works!</p>
+
+    <div class="min-vh-100">
+        <button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed">Toggle collapse</button>
+        <hr>
+        <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+          <div>Some content</div>
+        </div>
+    </div>

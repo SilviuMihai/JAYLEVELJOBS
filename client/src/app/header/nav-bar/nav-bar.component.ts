@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/_services/account_services/account.service';
+import { SharingDataServiceService } from 'src/app/_services/shared/sharing-data-service.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,10 +10,12 @@ import { AccountService } from 'src/app/_services/account_services/account.servi
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private accountService: AccountService, private router: Router) { }
-
   loggedIn = false;
   userEmail = '';
+  isCollapsed = false;
+  
+  constructor(private accountService: AccountService, private router: Router, private sharedDataService: SharingDataServiceService) { }
+  
 
   ngOnInit(): void { 
     this.getCurrentUser();   
@@ -38,6 +41,16 @@ export class NavBarComponent implements OnInit {
     this.accountService.logout();
     this.loggedIn= false;
     //this.router.navigateByUrl('/');
+  }
+
+  sendCollapse() {
+    if(this.isCollapsed == false) {
+      this.isCollapsed = true;
+    }
+    else {
+      this.isCollapsed = false;
+    }
+    this.sharedDataService.changeMessage(this.isCollapsed);
   }
 
 }

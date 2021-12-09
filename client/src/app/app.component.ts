@@ -1,21 +1,30 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from './_models/account/user';
 import { AccountService } from './_services/account_services/account.service';
+import { SharingDataServiceService } from './_services/shared/sharing-data-service.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Client APP';
   users:any;
+  isCollapsed = false;
+  subscription: Subscription;
 
-  constructor(private accountService: AccountService){}
+  constructor(private accountService: AccountService, private sharedDataService: SharingDataServiceService){}
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   ngOnInit() {
     this.setCurrentUser();
+    this.subscription = this.sharedDataService.currentMessage.subscribe(response => this.isCollapsed = response);
   }
 
   setCurrentUser(){

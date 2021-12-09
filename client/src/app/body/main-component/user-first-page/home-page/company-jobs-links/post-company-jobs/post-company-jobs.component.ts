@@ -34,8 +34,8 @@ export class PostCompanyJobsComponent implements OnInit {
 
   postJobForm = new FormGroup({
     url: new FormControl('',[Validators.required]),
-    nameUrl: new FormControl('',[Validators.maxLength(25),Validators.required]),
-    shortDescription: new FormControl('',[Validators.maxLength(50)]),
+    nameUrl: new FormControl('',[Validators.minLength(3),Validators.maxLength(25),Validators.required]),
+    shortDescription: new FormControl('',[Validators.minLength(10),Validators.maxLength(50)]),
     startDate: new FormControl(""),
     endDate: new FormControl(""),
 
@@ -47,7 +47,7 @@ export class PostCompanyJobsComponent implements OnInit {
     {    
       this.itemEvent.emit(true);
       this.toastr.success("Job Added !");
-      this.router.navigateByUrl('/companies-jobs-shared');
+      this.router.navigateByUrl('/companies-jobs-shared',{ queryParams: { pageNumber: 1 }});
     });
   }
 

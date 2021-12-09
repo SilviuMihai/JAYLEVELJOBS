@@ -47,6 +47,8 @@ export class InformationsService {
 
   //POST Request - Post a Job with a Link
   postCompanyLink(model: CompanyLinks) {
+    this.companyJobsLinksCache.clear();
+    this.responseCachedAllJobs = null;
     return this.http.post(this.baseUrl + "information/post-companies-jobs-links/",model);
   }
 
