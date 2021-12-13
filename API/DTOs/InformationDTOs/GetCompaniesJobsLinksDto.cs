@@ -8,8 +8,8 @@ namespace API.DTOs.InformationDTOs
         public string URL { get; set; }
         public string NameURL { get; set; }
         public string ShortDescription { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         
         //Reported Link
         public int? ReportedLink { get; set; }

@@ -39,16 +39,14 @@ export class PostCompanyJobsComponent implements OnInit {
     url: new FormControl('',[Validators.required]),
     nameUrl: new FormControl('',[Validators.minLength(3),Validators.maxLength(25),Validators.required]),
     shortDescription: new FormControl('',[Validators.minLength(10),Validators.maxLength(50)]),
-    startDate: new FormControl(""),
-    endDate: new FormControl(""),
-
+    startDate: new FormControl(null),
+    endDate: new FormControl(null)
   });
 
   postJobs()
   {
     this.informationService.postCompanyLink(this.postJobForm.value).subscribe(()=>
     {
-      //console.log(this.postJobForm.value)
       //Value that is emited towards the parent component(company-jobs-links)
       this.itemEvent.emit(true);
       this.toastr.success("Job Added !");
