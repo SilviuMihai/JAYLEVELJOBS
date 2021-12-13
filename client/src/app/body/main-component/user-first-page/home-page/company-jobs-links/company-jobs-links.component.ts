@@ -119,9 +119,15 @@ export class CompanyJobsLinksComponent implements OnInit {
     this.setPage = false;
   }
 
-  //child component - to parent component event
-  //this is the parent component
+  /* 
+   * Value Received from the post-company-jobs component (child component of company-jobs-links): 
+   * - child component - to parent component event
+   * - this is the parent component 
+   */
   receiveValueEventPostJob($event) {
+    this.pageParametersForAllJobs.pageNumber = this.paginationForAllJobs.totalPages+1;//Math.ceil(Number(((this.paginationForAllJobs.totalItems+1)/5).toFixed(1)));
+    this.paginationForAllJobs = null;
+    this.getCompaniesLinks();
     this.setPage = $event;
   }
 

@@ -81,17 +81,24 @@
                                                     </li>
                                                     <li class="list-group-item">
                                                         <div class="d-flex justify-content-center" *ngIf="AllJobsOrSearchedJobs === true ? paginationForAllJobs : paginationForSearching">
+                                                            <h3 class="text-center"><span class="badge badge-pill badge-info mr-2">{{AllJobsOrSearchedJobs === true ? pageParametersForAllJobs.pageNumber : pageParametersForSearchedJobs.pageNumber}}/{{AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalPages : paginationForSearching.totalPages}}</span></h3>
+                                                                
                                                             <pagination
-                                                            [boundaryLinks]="showBoundaryLinks"
-                                                            [totalItems]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalItems : paginationForSearching.totalItems"
-                                                            [itemsPerPage]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.itemsPerPage : paginationForSearching.itemsPerPage"
-                                                            [(ngModel)]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.currentPage : paginationForSearching.currentPage"
-                                                            (pageChanged)="pageChanged($event)"
-                                                            ></pagination>
-                                                            <!-- [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  -->
-                                                            <!-- (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method -->
-                                                            <div class="ml-4"><button type="button" class="btn btn-info"
-                                                                (click)="showBoundaryLinks = !showBoundaryLinks">Show First/Last buttons</button></div>
+                                                                [boundaryLinks]="showBoundaryLinks"
+                                                                [totalItems]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalItems : paginationForSearching.totalItems"
+                                                                [itemsPerPage]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.itemsPerPage : paginationForSearching.itemsPerPage"
+                                                                [(ngModel)]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.currentPage : paginationForSearching.currentPage"
+                                                                (pageChanged)="pageChanged($event)"
+                                                                [maxSize] = "10"
+                                                                [rotate] = "true"
+                                                                ></pagination>
+                                                                <!-- [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  -->
+                                                                <!-- (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method -->
+                                                                <div class="ml-2"><button type="button" class="btn btn-info"
+                                                                    (click)="showBoundaryLinks = !showBoundaryLinks">Show First/Last buttons</button></div>
+
+
+
                                                         </div>
                                                     </li>
                                 </ul>

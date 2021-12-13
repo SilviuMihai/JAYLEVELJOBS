@@ -13,8 +13,11 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class PostCompanyJobsComponent implements OnInit {
 
-  //child component - to parent component event
-  //this is the child component
+  /* 
+   * Value Sent from the post-company-jobs component(parent component being company-jobs-links): 
+   * - child component - to parent component event
+   * - this is the child component 
+   */
   @Output() itemEvent = new EventEmitter<boolean>();
   bsConfig: Partial<BsDatepickerConfig>;
 
@@ -44,10 +47,12 @@ export class PostCompanyJobsComponent implements OnInit {
   postJobs()
   {
     this.informationService.postCompanyLink(this.postJobForm.value).subscribe(()=>
-    {    
+    {
+      //console.log(this.postJobForm.value)
+      //Value that is emited towards the parent component(company-jobs-links)
       this.itemEvent.emit(true);
       this.toastr.success("Job Added !");
-      this.router.navigateByUrl('/companies-jobs-shared',{ queryParams: { pageNumber: 1 }});
+      this.router.navigateByUrl('/companies-jobs-shared');
     });
   }
 
