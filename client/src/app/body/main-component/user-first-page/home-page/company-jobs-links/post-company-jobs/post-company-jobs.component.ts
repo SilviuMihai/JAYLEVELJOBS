@@ -38,7 +38,7 @@ export class PostCompanyJobsComponent implements OnInit {
   postJobForm = new FormGroup({
     url: new FormControl('',[Validators.required]),
     nameUrl: new FormControl('',[Validators.minLength(3),Validators.maxLength(25),Validators.required]),
-    shortDescription: new FormControl('',[Validators.minLength(10),Validators.maxLength(50)]),
+    shortDescription: new FormControl('',[Validators.minLength(10),Validators.maxLength(80)]),
     startDate: new FormControl(null),
     endDate: new FormControl(null)
   });

@@ -42,10 +42,10 @@
                                 <ul class="list-group list-group-flush">
                                                 <li class="list-group-item">
                                                     <div class="row">
-                                                            <div class="col-3">
+                                                            <div class="col-4">
                                                                 <p><strong>Link/Description</strong></p>
                                                             </div>
-                                                            <div class="col-4">
+                                                            <div class="col-3">
                                                                 <p><strong>Start Date/End Date</strong></p>
                                                             </div>
                                                             <div class="col-3">
@@ -58,11 +58,19 @@
                                                 </li>
                                                     <li class="list-group-item list-group-item-action" *ngFor="let item of getJobs">
                                                             <div class="row">
-                                                                    <div class="col-3">
-                                                                        <a href="{{item.url}}" class="text-dark"><p>{{item.nameURL}}</p></a>
-                                                                    </div>
                                                                     <div class="col-4">
-                                                                        <p>{{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>
+                                                                        <a href="{{item.url}}" class="text-dark"><p>{{item.nameURL}}</p></a>
+                                                                        
+                                                                            <p class="text-muted text-break">{{item.shortDescription}}</p>
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <div *ngIf="item.startDate && item.endDate; else elseBlock">
+                                                                            <p>{{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>
+                                                                        </div>
+                                                                        <ng-template #elseBlock>
+                                                                            <p>Not Available</p>
+                                                                        </ng-template>
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <div *ngIf="accountService.currentUser$ | async; else elseBlock">
@@ -77,7 +85,7 @@
                                                                         <ng-template #elseBlock>--</ng-template>
                                                                     </div>
                                                             </div>
-                                                            <p class="text-muted">{{item.shortDescription}}</p>
+                                                            
                                                     </li>
                                                     <li class="list-group-item">
                                                         <div class="d-flex justify-content-center" *ngIf="AllJobsOrSearchedJobs === true ? paginationForAllJobs : paginationForSearching">

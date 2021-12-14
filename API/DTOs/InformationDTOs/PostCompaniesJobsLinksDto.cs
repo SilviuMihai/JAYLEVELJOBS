@@ -22,7 +22,7 @@ namespace API.DTOs.InformationDTOs
         [MaxLength(25)]
         public string NameURL { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(80)]
         public string ShortDescription { get; set; }
 
         public DateTime CheckDate { get; set; }
