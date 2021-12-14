@@ -74,13 +74,13 @@
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <div *ngIf="accountService.currentUser$ | async; else elseBlock">
-                                                                            <button type="button" [disabled]="item.linkNotAvailable" class="btn btn-warning" (click)='linkNotAvailable(item.idCompanyJobsLinks)'>Link Not Available</button>
+                                                                            <button type="button" [disabled]="item.linkNotAvailable" class="btn btn-light" (click)='linkNotAvailable(item.idCompanyJobsLinks)'><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i> Not Available</button>
                                                                         </div>
                                                                         <ng-template #elseBlock>--</ng-template>
                                                                     </div>
                                                                     <div class="col-2">
                                                                         <div *ngIf="accountService.currentUser$ | async; else elseBlock">
-                                                                            <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)'>Report</button>
+                                                                            <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)'><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i> Report</button>
                                                                         </div>
                                                                         <ng-template #elseBlock>--</ng-template>
                                                                     </div>
