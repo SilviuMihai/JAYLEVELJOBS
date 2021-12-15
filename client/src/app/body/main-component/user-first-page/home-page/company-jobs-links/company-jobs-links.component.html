@@ -59,18 +59,21 @@
                                                     <li class="list-group-item list-group-item-action" *ngFor="let item of getJobs">
                                                             <div class="row">
                                                                     <div class="col-4">
-                                                                        <a href="{{item.url}}" class="text-dark"><p>{{item.nameURL}}</p></a>
-                                                                        
-                                                                            <p class="text-muted text-break">{{item.shortDescription}}</p>
+                                                                        <div class="rounded border border-info">                      
+                                                                                <a href="{{item.url}}" class="text-dark text-center"><p class="m-2">{{item.nameURL}}</p></a>
+                                                                                <p *ngIf="item.Description != ''" class="text-muted text-center text-break m-0 p-0 mb-1">{{item.shortDescription}}</p>    
+                                                                        </div>
                                                                         
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <div *ngIf="item.startDate && item.endDate; else elseBlock">
-                                                                            <p>{{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>
+                                                                        <div class="rounded border border-info">                                                                         
+                                                                                <div *ngIf="item.startDate && item.endDate; else elseBlock">
+                                                                                    <p class="m-2 text-center">{{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>
+                                                                                </div>
+                                                                                <ng-template #elseBlock>
+                                                                                    <p class="m-2 text-center">Not Available</p>
+                                                                                </ng-template> 
                                                                         </div>
-                                                                        <ng-template #elseBlock>
-                                                                            <p>Not Available</p>
-                                                                        </ng-template>
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <div *ngIf="accountService.currentUser$ | async; else elseBlock">
