@@ -4,16 +4,16 @@
                 <div class="col mb-2">
                                 <div class="list-group list-group-horizontal align-items-baseline" >                                 
                                         <button (click)='getCompaniesLinks()'
-                                                        class="btn btn-info mr-2">See all Jobs</button>
+                                                        class="btn btn-info mr-2"><i class="bi bi-file-richtext"></i> See all Jobs</button>
                                     
                                         <button (click)='postJobsPage()' *ngIf="accountService.currentUser$ | async"
                                                         [disabled]="!setPage"
-                                                        class="btn btn-primary mr-2">Post a Job</button>
+                                                        class="btn btn-primary mr-2"><i class="bi bi-pen"></i> Post a Job</button>
                                    
                                             <form class="w-100" (ngSubmit)="searchBar.valid && getSearchedJobs()" *ngIf="setPage">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary">Search</button>
+                                                        <button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
                                                     </div>
                                                     <input type="search" [formControl]="searchBar" class="form-control" placeholder="Search Job"
                                                     [class.is-invalid]='searchBar.errors && searchBar.touched'>
@@ -43,16 +43,16 @@
                                                 <li class="list-group-item">
                                                     <div class="row">
                                                             <div class="col-4">
-                                                                <p><strong>Link/Description</strong></p>
+                                                                <p><i class="bi bi-link-45deg" style="font-size: 20px;"></i><strong> Link/ <i class="bi bi-info-circle-fill" style="font-size: 20px;"></i> Description</strong></p>
                                                             </div>
                                                             <div class="col-3">
-                                                                <p><strong>Start Date/End Date</strong></p>
+                                                                <p><i class="bi bi-calendar-month-fill" style="font-size: 20px;"></i> <strong> Start Date/End Date</strong></p>
                                                             </div>
                                                             <div class="col-3">
-                                                                <p><strong>Link Not Available</strong></p>
+                                                                <p><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i><strong> Link Not Available</strong></p>
                                                             </div>
                                                             <div class="col-2">
-                                                                <p><strong>Report Link</strong></p>
+                                                                <p><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i><strong> Report Link</strong></p>
                                                             </div>
                                                     </div>
                                                 </li>
@@ -67,25 +67,29 @@
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <div class="rounded border border-info">                                                                         
-                                                                                <div *ngIf="item.startDate && item.endDate; else elseBlock">
+                                                                                <div *ngIf="item.startDate && item.endDate; else elseBlockDate">
                                                                                     <p class="m-2 text-center">{{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>
                                                                                 </div>
-                                                                                <ng-template #elseBlock>
+                                                                                <ng-template #elseBlockDate>
                                                                                     <p class="m-2 text-center">Not Available</p>
                                                                                 </ng-template> 
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-3">
-                                                                        <div *ngIf="accountService.currentUser$ | async; else elseBlock">
-                                                                            <button type="button" [disabled]="item.linkNotAvailable" class="btn btn-light" (click)='linkNotAvailable(item.idCompanyJobsLinks)'><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i> Not Available</button>
+                                                                        <div *ngIf="accountService.currentUser$ | async; else elseBlockLinkNotAvailable">
+                                                                            <button type="button" [disabled]="item.linkNotAvailable" class="btn btn-light" (click)='linkNotAvailable(item.idCompanyJobsLinks)' tooltip="Link will be reported as not available !"><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i> Not Available</button>
                                                                         </div>
-                                                                        <ng-template #elseBlock>--</ng-template>
+                                                                        <ng-template #elseBlockLinkNotAvailable><div class="rounded border border-info">
+                                                                            <p class="m-2 text-center">Log In to Report !</p>
+                                                                        </div></ng-template>
                                                                     </div>
                                                                     <div class="col-2">
-                                                                        <div *ngIf="accountService.currentUser$ | async; else elseBlock">
-                                                                            <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)'><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i> Report</button>
+                                                                        <div *ngIf="accountService.currentUser$ | async; else elseBlockReportLink">
+                                                                            <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)' tooltip="Link is corrupted or represents something ''dangerous'' !"><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i> Report</button>
                                                                         </div>
-                                                                        <ng-template #elseBlock>--</ng-template>
+                                                                        <ng-template #elseBlockReportLink><div class="rounded border border-info">
+                                                                            <p class="m-2 text-center">Log In to Report !</p>
+                                                                        </div></ng-template>
                                                                     </div>
                                                             </div>
                                                             
