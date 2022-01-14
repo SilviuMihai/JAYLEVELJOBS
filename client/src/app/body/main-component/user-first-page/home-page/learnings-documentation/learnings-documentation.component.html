@@ -1,8 +1,54 @@
 
-    <div class="min-vh-100">
-        <button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed">Toggle collapse</button>
-        <hr>
-        <div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
-          <div>Some content</div>
+    <div class="container min-vh-100">
+      <div class="row m-2">
+        <div class="col">
+                        <!-- UPPER BUTTONS WITH SEARCH BAR --> 
+                        <div class="d-flex flex-wrap" >                                 
+                                
+                                  <button class="btn btn-info mr-2 mb-1 btn-sm"><i class="bi bi-file-richtext"></i> See all Jobs</button>
+                                  <button class="btn btn-primary mr-2 mb-1 btn-sm"><i class="bi bi-pen"></i> Post a Job</button>
+        
+                                      
+                                          <form class="flex-grow-1">
+                                            <div class="input-group input-group-sm">
+                                                <div class="input-group-prepend">
+                                                    <button  type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
+                                                </div>
+                                                <input type="search" class="form-control min-vw-25" placeholder="Search Job">
+                                                    <div class="invalid-feedback">Please enter between 3-50 characters !</div>
+                                                    <div class="invalid-feedback">Please enter a value !</div>
+                                            </div>
+                                          </form>
+                                      
+                                    
+                        </div>
         </div>
+    </div>
+    
+    
+           <!--  Border Line -->
+    <div  class="m-0 p-0 w-100" style="border-radius: 1px; border-style:solid;"></div>
+
+      <div class="row">
+        <div class="col">
+          <p><i class="bi bi-link-45deg" style="font-size: 20px;"></i><strong> Link/ <i class="bi bi-info-circle-fill" style="font-size: 20px;"></i> Description</strong></p>
+        </div>
+      </div>
+      <div class="row list-group-item-action jumbotron p-0 ml-0" *ngFor="let item of size">
+        <div class ="col-md-8">
+          <div class="pad"><strong>This text should wrap.</strong></div>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                  when an unknown printer took a galley of type and scrambled it to make a type
+                  specimen book.
+                </p>
+                <p class="text-muted">Ipsum is simply dummy</p>  
+          </div>
+          <div class="col-md-4 align-self-center pl-1"> 
+            <div class="text-center">
+              <button type="button"  class="btn btn-warning btn-sm m-1" tooltip="Link will be reported as not available or unrelated regarding the job !"><i class="bi bi-exclamation-triangle-fill"></i> Not Available/Unrelated</button>
+              <button type="button"  class="btn btn-danger btn-sm m-1" tooltip="Link is corrupted or represents something ''dangerous'' !"><i class="bi bi-dash-circle-dotted"></i> Corrupted</button>
+            </div>  
+          </div>                    
+      </div>   
     </div>

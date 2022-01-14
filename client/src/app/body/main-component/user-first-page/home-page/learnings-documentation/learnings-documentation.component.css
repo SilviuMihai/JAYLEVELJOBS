@@ -1,0 +1,8 @@
+a:hover { 
+    color: red;
+}
+
+.pad:hover {
+    color: green;
+    cursor: pointer;
+}

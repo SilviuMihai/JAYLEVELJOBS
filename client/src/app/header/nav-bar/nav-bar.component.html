@@ -1,40 +1,36 @@
- <nav class="nav bg-dark">
+<nav class="nav bg-dark">
 <div class="container-fluid">
   <div class="row">
-    <div class="col">
-   
-               <div class="d-flex">
-                <button type="button" class="btn text-white" (click)="sendCollapse()">Toggle collapse</button>
-                 <a class="ml-1 navbar-brand text-white" routerLink='/'>Junior/Entry Level Jobs</a>
-                 <a class="ml-1 nav-link text-white" routerLink='/errors'>Errors</a>
-               </div>
-   
+    <div class="col d-flex pl-1" >
+      <div *ngIf="showIconCollapse" (click)="sendCollapse()" class="text-white d-flex flex-row align-items-baseline" style="cursor:pointer;">
+        <i class="bi bi-toggles text-white" style="cursor:pointer; font-size: 25px;"></i> <div class="loghover">Collapse</div>
+      </div>        
     </div>
-    <div class="col d-flex justify-content-end">
+    <div class="col d-flex justify-content-end mr-1">
   
-                  <ul class="nav" *ngIf="!loggedIn">
-                    <li class="nav-item">
-                      <a class="nav-link text-white" routerLink='/login-page' routerLinkActive='active'>Login</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white" routerLink='/register-page' routerLinkActive='active'>Register</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white" routerLink='/forgot-password' routerLinkActive='active'>Forgot Password</a>
-                    </li>
-                  </ul>
+                  <div *ngIf="!loggedIn" class="d-flex"> 
+                      <div [ngClass]="{'mr-5': showIconCollapse == true, 'mr-2': showIconCollapse == false}"><a class="text-white text-decoration-none" routerLink='/login-page' routerLinkActive='active'><div><i class="bi bi-person-circle" style="font-size: 25px;"></i> <div *ngIf="showIconCollapse" class="d-inline" > Login</div></div></a></div>          
+                      <div class="dropdown"  dropdown>
+                        <a class="dropdown-toggle text-light" dropdownToggle><i class="bi bi-gear-fill" style="font-size: 25px;"></i> <div *ngIf="showIconCollapse" class="d-inline" > Options</div></a>
+                        <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                          <a class="dropdown-item" routerLink='/register-page'>Register</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" routerLink='/forgot-password'>Forgot Password</a>
+                        </div>
+                      </div> 
+                  </div>
   
-                      <div class="d-flex align-items-center" *ngIf="loggedIn">
-                          <div class="dropdown mr-4"  dropdown>
-                            <a class="dropdown-toggle text-light" dropdownToggle>{{userEmail}}</a>
-                            <div class="dropdown-menu" *dropdownMenu>
+                  <div *ngIf="loggedIn" class="d-flex">
+                          <div [ngClass]="{'mr-3': showIconCollapse == true, 'mr-4': showIconCollapse == false}" class="dropdown"  dropdown>  
+                            <a class="dropdown-toggle text-light" dropdownToggle><i class="bi bi-person text-white" style="font-size: 25px;"></i><div *ngIf="showIconCollapse" class="d-inline"> {{userEmail}}</div></a>
+                            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
                               <a class="dropdown-item" href="#">Profile</a>
                               <div class="dropdown-divider"></div>
                               <a class="dropdown-item" routerLink='/change-password'>Change Password</a>
                             </div>
                           </div>
-                          <a class="text-white mr-3 set-cursor" (click)="logout()">LogOut</a>
-                      </div>
+                          <a (click)="logout()" class="text-white set-cursor"><div class="d-flex flex-row align-items-baseline loghover"><i class="bi bi-box-arrow-right" style="font-size: 25px;"></i> <div *ngIf="showIconCollapse">  LogOut</div></div></a>
+                  </div>
     </div>
   </div>
 </div>                 

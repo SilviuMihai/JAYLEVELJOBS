@@ -7,18 +7,19 @@
                                 <app-nav-bar></app-nav-bar>
                         </div>
                 </div> -->
-                <div class="row h-100">
-                        <div class="col-2" style="padding: 0%;" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+                <div class="row h-100 align-items-stretch">
+                        <div *ngIf="!isCollapsed" [ngClass]="{'col-2' : isCollapsed == false}"  class="p-0">
                                 <app-side-bar></app-side-bar>
                         </div>
-                        <div style="padding: 0%;" [ngClass]="isCollapsed ? 'col' : 'col-10'">
+                        <div class="p-0" style="border-style: solid; border-color: white;" [ngClass]="{'col-10' : isCollapsed == false, 'col-12' : isCollapsed == true}">
+                                <div class="bg-dark text-center text-white" style="border-bottom-style: solid; border-color: white;"><h5 class="m-0">Junior/Entry Level Jobs</h5></div>                              
                                 <app-nav-bar></app-nav-bar>
                                 <router-outlet></router-outlet>  <!-- to access the pages via routing -->
                                 <app-footer-bar></app-footer-bar>
                         </div>
-                        <div id="collapseBasic" [collapse]="!isCollapsed" [isAnimated]="true" class="bg-dark" style="width: 2%;">
+                        <!-- <div id="collapseBasic" [collapse]="!isCollapsed" [isAnimated]="true" class="bg-dark" style="width: 2%;">
 
-                        </div>
+                        </div> -->
                 </div>
         
                <!--  <div class="row">

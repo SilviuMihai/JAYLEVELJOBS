@@ -1,17 +1,18 @@
     <!-- Buttons and the Search Bar -->
     <div class="container mt-2 min-vh-100">
-            <div class="row">
-                <div class="col mb-2">
-                                <div class="list-group list-group-horizontal align-items-baseline" >                                 
-                                        <button (click)='getCompaniesLinks()'
-                                                        class="btn btn-info mr-2"><i class="bi bi-file-richtext"></i> See all Jobs</button>
+            <div class="row m-0">
+                <div class="col mb-1">
+                                <!-- UPPER BUTTONS WITH SEARCH BAR --> 
+                                <div class="d-flex flex-wrap align-items-baseline" >                                 
+                                        <button *ngIf="!setPage" (click)='getCompaniesLinks()'
+                                                        class="btn btn-info btn-sm mr-2"><i class="bi bi-file-richtext"></i> See all Jobs</button>
                                     
-                                        <button (click)='postJobsPage()' *ngIf="accountService.currentUser$ | async"
+                                        <button (click)='postJobsPage()' *ngIf="(accountService.currentUser$ | async) && setPage"
                                                         [disabled]="!setPage"
-                                                        class="btn btn-primary mr-2"><i class="bi bi-pen"></i> Post a Job</button>
+                                                        class="btn btn-primary btn-sm mr-2 mb-1"><i class="bi bi-pen"></i> Post a Job</button>
                                    
-                                            <form class="w-100" (ngSubmit)="searchBar.valid && getSearchedJobs()" *ngIf="setPage">
-                                                <div class="input-group">
+                                            <form class="flex-grow-1" (ngSubmit)="searchBar.valid && getSearchedJobs()" *ngIf="setPage">
+                                                <div class="input-group input-group-sm">
                                                     <div class="input-group-prepend">
                                                         <button [disabled]="!searchBar.valid" type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
                                                     </div>
@@ -28,7 +29,7 @@
             
             
                    <!--  Border Line -->
-            <div style="border-radius: 0; border-style: solid; border-width: 1px;"></div>
+            <div  class="m-0 p-0 w-100" style="border-radius: 1px; border-style:solid;"></div>
 
 
 
@@ -37,86 +38,112 @@
                             <!-- List of Links -->
                     <div *ngIf="setPage">
                         <div class="mt-2 mb-4">
-                            <h3 class="text-center">Jobs Shared by Users</h3>
+                            <h3 class="text-center mb-3">Jobs Shared by Users</h3>
+                            <p  *ngIf="!(accountService.currentUser$ | async)" class="alert alert-primary"><i class="bi bi-info-square" style="font-size: 20px;"></i> Information: "Links are not tested or verified, we trust that our users will help people. Log In to Report the Links."</p>
+                            <p *ngIf="accountService.currentUser$ | async" class="alert alert-primary"><i class="bi bi-info-square" style="font-size: 20px;"></i> Information: "Links are not tested or verified, we trust that our users will help people. Report the links if something is not correct."</p>   
                         </div>
-                                <ul class="list-group list-group-flush">
+
+                        <div class="row">
+                            <div class="col">
+                              <p><i class="bi bi-link-45deg" style="font-size: 20px;"></i><strong> Link/ <i class="bi bi-info-circle-fill" style="font-size: 20px;"></i> Description</strong></p>
+                            </div>
+                        </div>
+
+                        <div *ngFor="let item of getJobs" class="row list-group-item-action jumbotron p-0 ml-0">
+                            <div [ngClass]="(accountService.currentUser$ | async) ? 'col-md-8' : 'col-12'">
+                                <a href="{{item.url}}" class="text-primary"><h5 class="m-2"><strong><i class="bi bi-link-45deg"></i>{{item.nameURL}}</strong></h5></a>                                                                                
+                                <p *ngIf="item.shortDescription !== ''" class="text-muted text-break m-2"><i class="bi bi-info-circle-fill"></i> About the job: {{item.shortDescription}}</p>
+                                <p  *ngIf="item.startDate && item.endDate;" class=" text-muted m-2"><i class="bi bi-calendar-range-fill"></i> Start Date - End Date: {{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p> 
+                            </div>
+                            <div *ngIf="accountService.currentUser$ | async;" class="col-md-4 align-self-center text-center pl-1"> 
+                                      <button (click)='linkNotAvailable(item.idCompanyJobsLinks)' type="button"  class="btn btn-warning btn-sm m-1" tooltip="Link will be reported as not available or unrelated regarding the job !"><i class="bi bi-exclamation-triangle-fill"></i> Not Available/Unrelated</button>
+                                      <button (click)='reportCompanyJobLink(item.idCompanyJobsLinks)' type="button"  class="btn btn-danger btn-sm m-1" tooltip="Link is corrupted or represents something ''dangerous'' !"><i class="bi bi-dash-circle-dotted"></i> Corrupted</button>
+                            </div>                     
+                        </div>
+                        
+                       <!-- PAGINATION -->
+                        <div class="d-flex justify-content-center mt-4 flex-wrap" *ngIf="AllJobsOrSearchedJobs === true ? paginationForAllJobs : paginationForSearching">                                  
+                            <div>
+                                <button type="button" class="btn btn-info mb-2"
+                                        (click)="showBoundaryLinks = !showBoundaryLinks">Show First/Last buttons</button>
+                            </div>
+                          
+                                <pagination class="pl-1 pr-1"
+                                        [boundaryLinks]="showBoundaryLinks"
+                                        [totalItems]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalItems : paginationForSearching.totalItems"
+                                        [itemsPerPage]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.itemsPerPage : paginationForSearching.itemsPerPage"
+                                        [(ngModel)]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.currentPage : paginationForSearching.currentPage"
+                                        (pageChanged)="pageChanged($event)"
+                                        [maxSize] = "maxSize"
+                                        [rotate] = "true"
+                                ></pagination>
+                                           
+                            <!-- [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  -->
+                            <!-- (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method -->
+                            
+                                <h3><span class="badge badge-pill badge-info">{{AllJobsOrSearchedJobs === true ? pageParametersForAllJobs.pageNumber : pageParametersForSearchedJobs.pageNumber}}/{{AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalPages : paginationForSearching.totalPages}}</span></h3>
+                        
+                        </div>
+                                
+                        <!-- <ul class="list-group list-group-flush">
                                                 <li class="list-group-item">
                                                     <div class="row">
-                                                            <div class="col-4">
+                                                            <div [ngClass]="(accountService.currentUser$ | async) ? 'col-7' : 'col-12'">
                                                                 <p><i class="bi bi-link-45deg" style="font-size: 20px;"></i><strong> Link/ <i class="bi bi-info-circle-fill" style="font-size: 20px;"></i> Description</strong></p>
                                                             </div>
-                                                            <div class="col-3">
-                                                                <p><i class="bi bi-calendar-month-fill" style="font-size: 20px;"></i> <strong> Start Date/End Date</strong></p>
-                                                            </div>
-                                                            <div class="col-3">
+                                                            <div class="col-3" *ngIf="accountService.currentUser$ | async;">
                                                                 <p><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i><strong> Link Not Available</strong></p>
                                                             </div>
-                                                            <div class="col-2">
-                                                                <p><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i><strong> Report Link</strong></p>
+                                                            <div class="col-2" *ngIf="accountService.currentUser$ | async;">
+                                                                <p><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i><strong> Corrupted Link</strong></p>
                                                             </div>
                                                     </div>
                                                 </li>
                                                     <li class="list-group-item list-group-item-action" *ngFor="let item of getJobs">
                                                             <div class="row">
-                                                                    <div class="col-4">
-                                                                        <div class="rounded border border-info">                      
-                                                                                <a href="{{item.url}}" class="text-dark text-center"><p class="m-2">{{item.nameURL}}</p></a>
-                                                                                <p *ngIf="item.Description != ''" class="text-muted text-center text-break m-0 p-0 mb-1">{{item.shortDescription}}</p>    
-                                                                        </div>
-                                                                        
+                                                                    <div [ngClass]="(accountService.currentUser$ | async) ? 'col-7' : 'col-12'">
+                                                                                <a href="{{item.url}}" class="text-dark"><h5 class="m-2">{{item.nameURL}}</h5></a>                                                                                
+                                                                                    <p *ngIf="item.shortDescription !== ''" class="text-muted text-break m-2">About the job: {{item.shortDescription}}</p>
+                                                                                    <p  *ngIf="item.startDate && item.endDate;" class=" text-muted m-2">Start Date - End Date: {{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>                                  
+                                                                    </div>  
+                                                                    <div *ngIf="accountService.currentUser$ | async;" class="col-3">
+                                                                        <button type="button" [disabled]="item.linkNotAvailable" class="btn btn-light" (click)='linkNotAvailable(item.idCompanyJobsLinks)' tooltip="Link will be reported as not available !"><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i> Not Available</button>
                                                                     </div>
-                                                                    <div class="col-3">
-                                                                        <div class="rounded border border-info">                                                                         
-                                                                                <div *ngIf="item.startDate && item.endDate; else elseBlockDate">
-                                                                                    <p class="m-2 text-center">{{item.startDate | date: 'dd MMM yyyy'}} - {{item.endDate | date: 'dd MMM yyyy'}}</p>
-                                                                                </div>
-                                                                                <ng-template #elseBlockDate>
-                                                                                    <p class="m-2 text-center">Not Available</p>
-                                                                                </ng-template> 
-                                                                        </div>
+                                                                    <div *ngIf="accountService.currentUser$ | async;" class="col-2">
+                                                                        <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)' tooltip="Link is corrupted or represents something ''dangerous'' !"><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i> Report</button>
                                                                     </div>
-                                                                    <div class="col-3">
-                                                                        <div *ngIf="accountService.currentUser$ | async; else elseBlockLinkNotAvailable">
-                                                                            <button type="button" [disabled]="item.linkNotAvailable" class="btn btn-light" (click)='linkNotAvailable(item.idCompanyJobsLinks)' tooltip="Link will be reported as not available !"><i class="bi bi-exclamation-triangle-fill" style="font-size: 20px;"></i> Not Available</button>
-                                                                        </div>
-                                                                        <ng-template #elseBlockLinkNotAvailable><div class="rounded border border-info">
-                                                                            <p class="m-2 text-center">Log In to Report !</p>
-                                                                        </div></ng-template>
-                                                                    </div>
-                                                                    <div class="col-2">
-                                                                        <div *ngIf="accountService.currentUser$ | async; else elseBlockReportLink">
-                                                                            <button type="button" [disabled]="item.reportedLink" class="btn btn-danger" (click)='reportCompanyJobLink(item.idCompanyJobsLinks)' tooltip="Link is corrupted or represents something ''dangerous'' !"><i class="bi bi-dash-circle-dotted" style="font-size: 20px;"></i> Report</button>
-                                                                        </div>
-                                                                        <ng-template #elseBlockReportLink><div class="rounded border border-info">
-                                                                            <p class="m-2 text-center">Log In to Report !</p>
-                                                                        </div></ng-template>
-                                                                    </div>
+                                                                    
                                                             </div>
                                                             
                                                     </li>
-                                                    <li class="list-group-item">
-                                                        <div class="d-flex justify-content-center" *ngIf="AllJobsOrSearchedJobs === true ? paginationForAllJobs : paginationForSearching">
-                                                            <h3 class="text-center"><span class="badge badge-pill badge-info mr-2">{{AllJobsOrSearchedJobs === true ? pageParametersForAllJobs.pageNumber : pageParametersForSearchedJobs.pageNumber}}/{{AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalPages : paginationForSearching.totalPages}}</span></h3>
+                                                    <li style="list-style: none;">
+                                                        <div class="d-flex justify-content-center mt-4 flex-wrap" *ngIf="AllJobsOrSearchedJobs === true ? paginationForAllJobs : paginationForSearching">
+                                                            
+                                                                <div>
+                                                                    <button type="button" class="btn btn-info mb-2"
+                                                                            (click)="showBoundaryLinks = !showBoundaryLinks">Show First/Last buttons</button>
+                                                                </div>
+                                                              
+                                                                    <pagination class="pl-1 pr-1"
+                                                                            [boundaryLinks]="showBoundaryLinks"
+                                                                            [totalItems]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalItems : paginationForSearching.totalItems"
+                                                                            [itemsPerPage]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.itemsPerPage : paginationForSearching.itemsPerPage"
+                                                                            [(ngModel)]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.currentPage : paginationForSearching.currentPage"
+                                                                            (pageChanged)="pageChanged($event)"
+                                                                            [maxSize] = "maxSize"
+                                                                            [rotate] = "true"
+                                                                    ></pagination>
+                                                                               
+                                                                 [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  
+                                                                 (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method 
                                                                 
-                                                            <pagination
-                                                                [boundaryLinks]="showBoundaryLinks"
-                                                                [totalItems]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalItems : paginationForSearching.totalItems"
-                                                                [itemsPerPage]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.itemsPerPage : paginationForSearching.itemsPerPage"
-                                                                [(ngModel)]="AllJobsOrSearchedJobs === true ? paginationForAllJobs.currentPage : paginationForSearching.currentPage"
-                                                                (pageChanged)="pageChanged($event)"
-                                                                [maxSize] = "10"
-                                                                [rotate] = "true"
-                                                                ></pagination>
-                                                                <!-- [(ngModel)]="pagination.currentPage" -> Taking the current page and also updating the current page  -->
-                                                                <!-- (pageChanged)="pageChanged($event)" -> When a particular button is pressed (page) than will call the method -->
-                                                                <div class="ml-2"><button type="button" class="btn btn-info"
-                                                                    (click)="showBoundaryLinks = !showBoundaryLinks">Show First/Last buttons</button></div>
-
-
-
+                                                                    <h3><span class="badge badge-pill badge-info">{{AllJobsOrSearchedJobs === true ? pageParametersForAllJobs.pageNumber : pageParametersForSearchedJobs.pageNumber}}/{{AllJobsOrSearchedJobs === true ? paginationForAllJobs.totalPages : paginationForSearching.totalPages}}</span></h3>
+                                                            
                                                         </div>
-                                                    </li>
-                                </ul>
+                                                    </li>                     
+                                </ul> -->
+                                
+
                     </div>
                         <!-- Access the Post Page of Company Links -->
                     <div *ngIf="!setPage">

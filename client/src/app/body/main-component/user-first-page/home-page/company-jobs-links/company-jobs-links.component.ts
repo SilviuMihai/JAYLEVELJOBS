@@ -1,6 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { AfterViewInit, ChangeDetectionStrategy, Component,  DoCheck,  EventEmitter,  OnDestroy,  OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component,  DoCheck,  EventEmitter,  HostListener,  OnDestroy,  OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { PaginationComponent } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { SharedValuesCompanyJobsLinks } from 'src/app/shared/Information/SharedCompanyJobsLinks';
@@ -23,12 +24,13 @@ export class CompanyJobsLinksComponent implements OnInit {
    setPage = true;
    //loggedIn = false;
    getJobs: CompanyLinks[];
-   /* ----------------- */
+   smallerScreen = false;
+   
 
    /* --- Searching --- */
    searchBar = new FormControl('',[Validators.minLength(3),Validators.maxLength(50),Validators.required]);
    oldSearchedValue = "";
-   /* ----------------- */
+   
  
  
    /* --- Pagination --- */
@@ -39,14 +41,30 @@ export class CompanyJobsLinksComponent implements OnInit {
    pageNumberOldValue = 1;
    subscription: Subscription;
    AllJobsOrSearchedJobs = true;
-   /* ----------------- */
+   maxSize = 10;
+
+   //Access to the Child component Pagination, to be able to modify the properties, more specific the "maxSize"
+   @ViewChild(PaginationComponent) paginationComp!: PaginationComponent;
+   
+
+   //Variable used to get the width by resising the page
+  getScreenWidthOnResize: any;
+
+  //Variable used to get the width by refreshing the page
+  getScreenWidthOnRefresh: any;
 
   constructor(public accountService: AccountService,private informationService: InformationsService, 
     private toastr: ToastrService, private sharedDataService: SharingDataServiceService) { }
 
  
   ngOnInit(): void {
-        this.getCompaniesLinks();   
+        this.getCompaniesLinks();
+        //Used for resising the page    
+        this.getScreenWidthOnResize = window.innerWidth;
+
+        //Take the width of the screen by using the interface Screen, which has the property width
+        this.getScreenWidthOnRefresh = window.innerWidth;
+        this.windowRefresh();   
   }
   
 
@@ -73,7 +91,6 @@ export class CompanyJobsLinksComponent implements OnInit {
     this.paginationForSearching = null;
     this.informationService.getCompaniesLink(this.pageParametersForAllJobs).subscribe(response =>{ 
       this.getJobs = response.result;
-      //this.sharedDataService.sendValuesPagination(response.pagination);
       this.paginationForAllJobs = response.pagination;
     });
     this.getJobsPage();
@@ -81,8 +98,9 @@ export class CompanyJobsLinksComponent implements OnInit {
 
   reportCompanyJobLink(id:number){
     this.informationService.reportCompanyJobLink(id).subscribe(()=>
-    //refreshes the list of companies without the reported link
-    //doesn't make another request to have all the companies, just a refresh of the list
+    /* Refreshes the list of companies without the reported link
+     * Doesn't make another request to have all the companies, just a refresh of the list 
+     */
     {
       this.getJobs = this.getJobs.filter(x=> x.idCompanyJobsLinks !== id)
       this.toastr.success("Link was Reported !");
@@ -92,8 +110,9 @@ export class CompanyJobsLinksComponent implements OnInit {
 
   linkNotAvailable(id:number){
     this.informationService.linkNotAvailable(id).subscribe(()=>
-    //refreshes the list of companies without the reported link
-    //doesn't make another request to have all the companies, just a refresh of the list
+    /* Refreshes the list of companies without the reported link
+     * Doesn't make another request to have all the companies, just a refresh of the list 
+     */
     {
       this.getJobs = this.getJobs.filter(x=> x.idCompanyJobsLinks !== id)
       this.toastr.success("Link was Reported !");
@@ -130,6 +149,48 @@ export class CompanyJobsLinksComponent implements OnInit {
     this.getCompaniesLinks();
     this.setPage = $event;
   }
+
+    //Logic used in case of refreshing the page and is collapsing the sidebar 
+    windowRefresh() {
+      if(this.getScreenWidthOnRefresh <= 1050 && this.getScreenWidthOnRefresh >= 400) {
+       this.maxSize = 3;
+       this.smallerScreen = true;
+      }
+      else if(window.innerWidth < 400) {
+        this.maxSize = 0;
+        this.smallerScreen = true;
+      }
+      else {
+        this.maxSize = 10;
+        this.smallerScreen = false;
+      }
+    }
+  
+    /* Decorator that declares a DOM event to listen for, and provides a handler method to 
+     * run when that event occurs. -> https://angular.io/api/core/HostListener
+     * Sets the pagination maxSize to be smaller when the width decreases
+     */
+    @HostListener('window:resize', ['$event'])  onWindowResize() {
+      //const newMaxSize = window.innerWidth <= 1050 ? 3 : 10;
+      let newMaxSize = 10;
+      if(window.innerWidth <= 1050 && window.innerWidth >= 400) {
+        newMaxSize = 3;
+        this.smallerScreen = true;
+      }
+      else if (window.innerWidth < 400) {
+        newMaxSize = 0;
+        this.smallerScreen = true;
+      } 
+      else {
+        newMaxSize = 10;
+        this.smallerScreen = false;
+      }
+
+      if (this.paginationComp.maxSize !== newMaxSize) {
+        this.paginationComp.maxSize = newMaxSize;
+        this.paginationComp.selectPage(this.paginationComp.page);
+      }
+    }
 
   /* getCurrentUser()
   {

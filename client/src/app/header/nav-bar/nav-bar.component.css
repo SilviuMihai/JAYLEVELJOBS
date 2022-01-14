@@ -1,9 +1,13 @@
-.mr-6{
-    margin-right: 100px;
+.mr-6 {
+    margin-right: 500px;
 } 
-.dropdown-toggle{
+.dropdown-toggle {
     cursor: pointer;
 }
-.set-cursor{
+.set-cursor {
     cursor: pointer;
+}
+
+.loghover:hover {
+    color: grey;
 }

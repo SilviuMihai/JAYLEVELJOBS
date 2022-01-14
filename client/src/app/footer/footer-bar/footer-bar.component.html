@@ -1,7 +1,17 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
     <div class="container-fluid">
       <div class="row">
-        <div class="col"><a class="navbar-brand" routerLink='/'>Junior/Entry Level Jobs</a></div>
+          <div class="col">
+            <div *ngIf="isCollapsedSideBar">
+              <a routerLink='/' class="text-white mr-3" aria-current="page">
+                <i class="bi bi-house" style="cursor:pointer; font-size: 25px;"></i>
+              </a>
+              <a routerLink="/companies-jobs-shared" class="text-white">
+                <i class="bi bi-briefcase-fill" style="cursor:pointer; font-size: 25px;"></i>
+              </a>
+            </div>
+            <div *ngIf="!isCollapsedSideBar" class="text-white">Footer - Contact and other stuff</div>
+          </div>
       </div>
     </div>
 </nav>

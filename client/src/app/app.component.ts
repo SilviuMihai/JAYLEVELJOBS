@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { User } from './_models/account/user';
@@ -15,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   users:any;
   isCollapsed = false;
   subscription: Subscription;
+  getScreenWidthOnRefresh: any;
 
   constructor(private accountService: AccountService, private sharedDataService: SharingDataServiceService){}
   
@@ -25,6 +25,16 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setCurrentUser();
     this.subscription = this.sharedDataService.currentMessage.subscribe(response => this.isCollapsed = response);
+    //Take the width of the screen by using the interface Screen, which has the property width
+    this.getScreenWidthOnRefresh = window.innerWidth;
+    this.windowRefresh();
+  }
+
+  //Logic used in case of refreshing the page and is collapsing the sidebar 
+  windowRefresh() {
+    if(this.getScreenWidthOnRefresh <= 650) {
+      this.isCollapsed = true;
+    }
   }
 
   setCurrentUser(){
